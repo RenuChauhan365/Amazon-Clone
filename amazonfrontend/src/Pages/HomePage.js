@@ -1,8 +1,12 @@
 import React from "react";
+import Header from "../Components/Layout/Header";
+import Footer from "../Components/Layout/Footer";
 
 function HomePage() {
   return (
     <>
+
+<Header/>
       <div className="caro">
         <div id="carouselExample" className="carousel slide">
           <div className="carousel-inner">
@@ -89,7 +93,10 @@ function HomePage() {
           </button>
         </div>
       </div>
+
+      <Footer/>
     </>
+
   );
 }
 
