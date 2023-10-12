@@ -11,7 +11,6 @@ const Header = () => {
           Amazon.In
         </Typography>
 
-
 				<div style={{ position: 'relative', backgroundColor: 'white', borderRadius: 4, marginLeft: 10 }}>
           <InputBase
             placeholder="Search…"
