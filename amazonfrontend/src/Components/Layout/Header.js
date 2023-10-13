@@ -76,7 +76,7 @@ const Header = ({ isLoggedIn }) => {
           </NavLink>
 
           <NavLink
-            to="/"
+            to="/product"
             color="inherit"
             style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
           >

@@ -1,10 +1,13 @@
 import React from "react";
 import Footer from "../Components/Layout/Footer";
+import Product from "../Pages/User/Product";
 
-function HomePage() {
+function HomePage({ product }) {
+
+  const { title, description, imageUrl, price } = product;
+
   return (
     <>
-      {/*<Header/>*/}
       <div>
         <div id="carouselExample" className="carousel slide">
           <div className="carousel-inner">
@@ -45,14 +48,8 @@ function HomePage() {
                 alt="..."
               />
             </div>
-            <div className="carousel-item">
-              <img
-                src="https://images-eu.ssl-images-amazon.com/images/G/31/img21/Wireless/katariy/Events_23/Jupiter_23/pre_book/GW/FINALCREATIVES_v2/PEAGW/DAY1GW/DAY2GW/D97892620_ITEL_P55_GW_Jupiter23_PC_Hero_3000x1200_1._CB575934035_.jpg
-"
-                className="d-block w-100"
-                alt="..."
-              />
-            </div>
+
+
             <div className="carousel-item">
               <img
                 src="
@@ -62,6 +59,7 @@ function HomePage() {
                 alt="..."
               />
             </div>
+
             <div className="carousel-item">
               <img
                 src="
@@ -90,8 +88,12 @@ function HomePage() {
             <span className="visually-hidden">Next</span>
           </button>
         </div>
-      </div>
 
+
+ <div>
+  {/*<Product/>*/}
+ </div>
+      </div>
       <Footer />
     </>
   );
