@@ -1,13 +1,11 @@
 import React from "react";
-import Header from "../Components/Layout/Header";
 import Footer from "../Components/Layout/Footer";
 
 function HomePage() {
   return (
     <>
-
-<Header/>
-      <div className="caro">
+      {/*<Header/>*/}
+      <div>
         <div id="carouselExample" className="carousel slide">
           <div className="carousel-inner">
             <div className="carousel-item active">
@@ -94,9 +92,8 @@ function HomePage() {
         </div>
       </div>
 
-      <Footer/>
+      <Footer />
     </>
-
   );
 }
 

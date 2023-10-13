@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -7,11 +7,15 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
+import { NavLink,useNavigate} from "react-router-dom";
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function SignIn({ setLoggedIn }) {
+
+
+	const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -19,6 +23,17 @@ export default function SignIn() {
       email: data.get("email"),
       password: data.get("password"),
     });
+		if (data.get("email") === "renu24793@gmail.com" && data.get("password") === "Ren123456") {
+      setLoggedIn(true); // Update the login status to true
+      navigate("/");
+    } else {
+      // Handle authentication failure (display error message or redirect to an error page)
+      console.log("Authentication failed");
+    }
+
+
+		navigate("/");
+
   };
 
   return (

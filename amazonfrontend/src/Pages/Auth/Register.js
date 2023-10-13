@@ -1,4 +1,4 @@
-import React ,{useState} from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -7,53 +7,75 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
-import { toast } from "react-toastify";
-import axios from "axios";
+import { NavLink, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+//import axios from "axios";
+import * as yup from "yup";
+
+const validationSchema = yup.object().shape({
+  firstName: yup.string().required("First Name is required"),
+  lastName: yup.string().required("Last Name is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
+
 const defaultTheme = createTheme();
 
-export default function Register() {
-
-
+export default function Register({ setLoggedIn }) {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [lastName, setLastName] = useState("");
-  const [profilePicture, setProfilePicture] = useState("");
-  //const [role, setRole] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [errors, setErrors] = useState({}); // State to hold validation errors
 
+  const navigate = useNavigate(); // Get the navigate function from React Router
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		try {
-			const formData = new FormData();
-			formData.append('firstName', firstName);
-			formData.append('lastName', lastName);
-			formData.append('email', email);
-			formData.append('password', password);
-			//formData.append('role', role);
-			formData.append('profilePicture', profilePicture);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await validationSchema.validate(
+        { firstName, lastName, email, password },
+        { abortEarly: false }
+      );
 
-			const response = await axios.post(`${process.env.REACT_APP_API}/api/auth/register`, formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data'
-				}
-			});
+      // Save user data to localStorage
+      const userData = {
+        firstName,
+        lastName,
+        email,
+        password,
+        profilePicture: profilePicture && profilePicture.name, // Store file name
+      };
+      localStorage.setItem("userData", JSON.stringify(userData));
 
-			if (response.data.success) {
-				toast.success(response.data.message);
-				//navigate('/login')
-			} else {
-				toast.error(response.data.message);
-			}
-		} catch (error) {
-			console.error(error);
+      toast.success("Account created successfully!");
+
+			setLoggedIn(true);
+      console.log(userData);
+
+      navigate("/login");
+
 		}
-	};
 
+		catch (error) {
+      console.error(error);
+      const validationErrors = {};
+      error.inner.forEach((e) => {
+        validationErrors[e.path] = e.message;
+      });
+      setErrors(validationErrors);
+    }
+    toast.error("Failed to create account. Please try again.");
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      {/*<ToastContainer/>*/}
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -98,9 +120,10 @@ export default function Register() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-									value={firstName}
-									onChange={(e) => setFirstName(e.target.value)}
-
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  error={!!errors.firstName} // Check if there is an error for firstName field
+                  helperText={errors.firstName} // Display error message for firstName field if present
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -111,9 +134,8 @@ export default function Register() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-									value={lastName}
-									onChange={(e) => setLastName(e.target.value)}
-
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -124,9 +146,8 @@ export default function Register() {
                   label="Email"
                   name="email"
                   autoComplete="email"
-									value={email}
-									onChange={(e) => setEmail(e.target.value)}
-
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
 
@@ -139,19 +160,20 @@ export default function Register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-									value={password}
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
-
                 />
-
               </Grid>
 
-							<Grid>
-								<br />
-							<input type="file"  onChange={(e) => setProfilePicture(e.target.files[0])} accept="image/*" />
-							</Grid>
+              <Grid>
+                <br />
+                <input
+                  type="file"
+                  onChange={(e) => setProfilePicture(e.target.files[0])}
+                  accept="image/*"
+                />
+              </Grid>
             </Grid>
-
 
             <Button
               type="submit"

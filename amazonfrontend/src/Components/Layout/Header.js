@@ -1,17 +1,29 @@
-import React from "react";
+import React , {useState} from "react";
 import {
   AppBar,
   Toolbar,
   Typography,
   IconButton,
-  
   InputBase,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavLink } from "react-router-dom";
+import Logout from "../../Pages/Auth/Logout";
 
-const Header = () => {
+const Header = ({ isLoggedIn }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+
+
   return (
     <AppBar position="static" sx={{ backgroundColor: "black" }}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
@@ -29,7 +41,7 @@ const Header = () => {
             alignItems: "center",
             borderRadius: 4,
             backgroundColor: "white",
-            marginLeft: "auto",
+            padding: "5px 40px",
           }}
         >
           <InputBase
@@ -54,13 +66,54 @@ const Header = () => {
           >
             Home
           </NavLink>
+
           <NavLink
-            to="/register"
+            to="/"
             color="inherit"
             style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
           >
-            Sign Up
+            Order
           </NavLink>
+
+          <NavLink
+            to="/"
+            color="inherit"
+            style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
+          >
+            Product
+          </NavLink>
+
+   {isLoggedIn ? (
+      <>
+        <NavLink
+          to="/"
+          color="inherit"
+          style={{
+            textDecoration: "none",
+            color: "white",
+            marginLeft: 20,
+          }}
+          onClick={handleModalOpen}
+        >
+          Logout
+        </NavLink>
+        <Logout open={isModalOpen} handleClose={handleModalClose} />
+
+      </>
+    ) : (
+      // If user is not logged in, show SignUp
+      <NavLink
+        to="/register"
+        color="inherit"
+        style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
+      >
+        Sign Up
+      </NavLink>
+    )}
+
+
+
+
           <IconButton color="inherit" style={{ marginLeft: 20 }}>
             <ShoppingCartIcon />
           </IconButton>
