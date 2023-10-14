@@ -12,7 +12,7 @@ import Logout from "./Pages/Auth/Logout";
 import Product from "./Pages/User/Product";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Header from "./Components/Layout/Header";
 
 function App() {
 
