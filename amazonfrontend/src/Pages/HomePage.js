@@ -1,10 +1,8 @@
 import React from "react";
-import Footer from "../Components/Layout/Footer";
-import Product from "../Pages/User/Product";
+import Footer from "../components/Layout/Footer";
 
 function HomePage({ product }) {
 
-  const { title, description, imageUrl, price } = product;
 
   return (
     <>
@@ -88,13 +86,10 @@ function HomePage({ product }) {
             <span className="visually-hidden">Next</span>
           </button>
         </div>
-
-
  <div>
-  {/*<Product/>*/}
  </div>
       </div>
-      <Footer />
+      <Footer/>
     </>
   );
 }

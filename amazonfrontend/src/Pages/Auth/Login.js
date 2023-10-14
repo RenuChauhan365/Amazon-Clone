@@ -188,12 +188,12 @@ export default function SignIn({ setLoggedIn }) {
             </Button>
             <Grid container>
               <Grid item xs>
-                <NavLink to="/forgot-password" variant="body2">
+                <NavLink to="/auth/forgot-password" variant="body2">
                   Forgot password?
                 </NavLink>
               </Grid>
               <Grid item>
-                <NavLink to="/register" variant="body2">
+                <NavLink to="/auth/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </NavLink>
               </Grid>

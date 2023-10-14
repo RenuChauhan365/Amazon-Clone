@@ -86,7 +86,7 @@ const Header = ({ isLoggedIn }) => {
    {isLoggedIn ? (
       <>
         <NavLink
-          to="/"
+          to="/auth/logout"
           color="inherit"
           style={{
             textDecoration: "none",
@@ -103,7 +103,7 @@ const Header = ({ isLoggedIn }) => {
     ) : (
       // If user is not logged in, show SignUp
       <NavLink
-        to="/register"
+        to="/auth/register"
         color="inherit"
         style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
       >
