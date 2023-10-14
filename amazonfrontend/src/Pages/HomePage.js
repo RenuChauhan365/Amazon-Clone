@@ -1,11 +1,13 @@
 import React from "react";
 import Footer from "../components/Layout/Footer";
+import { useAuth } from "../Context/Auth";
 
-function HomePage({ product }) {
-
+function HomePage() {
+  const [auth, setAuth] = useAuth();
 
   return (
     <>
+
       <div>
         <div id="carouselExample" className="carousel slide">
           <div className="carousel-inner">
@@ -47,7 +49,6 @@ function HomePage({ product }) {
               />
             </div>
 
-
             <div className="carousel-item">
               <img
                 src="
@@ -86,14 +87,12 @@ function HomePage({ product }) {
             <span className="visually-hidden">Next</span>
           </button>
         </div>
- <div>
-
-  
- </div>
+        <div>
+        </div>
       </div>
-      <Footer/>
+      <pre> {JSON.stringify(auth, null, 4)} </pre>
+      <Footer />
     </>
   );
 }
-
 export default HomePage;

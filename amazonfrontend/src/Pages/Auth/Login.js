@@ -10,17 +10,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-
-
+import { useAuth } from "../../Context/Auth";
 
 const defaultTheme = createTheme();
 
-export default function SignIn({ setLoggedIn }) {
-
-
+export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [auth ,setAuth] = useState()
+  const [auth, setAuth] = useAuth();
   const [fieldErrors, setFieldErrors] = useState({});
 
   const navigate = useNavigate();
@@ -48,7 +45,6 @@ export default function SignIn({ setLoggedIn }) {
     }
 
     if (Object.keys(errors).length > 0) {
-      // There are validation errors, update the state and stop form submission
       setFieldErrors(errors);
       return;
     }
@@ -59,43 +55,40 @@ export default function SignIn({ setLoggedIn }) {
     };
 
     try {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API}/api/auth/login`,
-      userData
-    );
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/api/auth/login`,
+        userData
+      );
 
-    if (response.data.success) {
-      toast.success(response.data.message);
-      setLoggedIn(true);
-
-      setAuth({
-        ...auth,
-        user: response.data.user,
-        token : response.data.token
-      })
-
-
-      localStorage.setItem('auth' , JSON.stringify(response.data))
-
-
-      navigate("/");
-    } else {
-      if (response.data.message) {
-        toast.error(response.data.message);
-      }
-
-      if (response.data.errors) {
-        const errorObj = {};
-        response.data.errors.forEach((error) => {
-          errorObj[error.field] = error.message;
+      if (response.data.success) {
+        setAuth({
+          ...auth,
+          user: response.data.user,
+          token: response.data.token,
         });
-        setFieldErrors(errorObj);
+        console.log(response.data);
+
+        localStorage.setItem("auth", JSON.stringify(response.data));
+        console.log(auth);
+        toast.success(response.data.message);
+        navigate("/");
       } else {
-        setFieldErrors({});
-        toast.error("Login failed");
+        if (response.data.error) {
+          toast.error(response.data.message);
+        }
+
+        if (response.data.errors) {
+          const errorObj = {};
+          response.data.errors.forEach((error) => {
+            errorObj[error.field] = error.message;
+          });
+          setFieldErrors(errorObj);
+        } else {
+          setFieldErrors({});
+          toast.error("Login failed");
+        }
       }
-    }}
-    catch (error) {
+    } catch (error) {
       // Handle network errors or other exceptions
       toast.error("Invalid credentials");
     }
@@ -107,7 +100,7 @@ export default function SignIn({ setLoggedIn }) {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 3,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

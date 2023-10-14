@@ -40,7 +40,7 @@ export default function Register() {
 
       if (response.data.success) {
         toast.success(" Registration Successful, please verify your email.");
-        navigate("/login");
+        navigate("/auth/login");
       } else {
         if (response.data.errors) {
           const errorObj = {};
@@ -69,6 +69,7 @@ export default function Register() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            marginTop:3
           }}
         >
           <NavLink
