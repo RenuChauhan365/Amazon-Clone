@@ -10,6 +10,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+
+
+
 const defaultTheme = createTheme();
 
 export default function SignIn({ setLoggedIn }) {
@@ -17,6 +20,7 @@ export default function SignIn({ setLoggedIn }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [auth ,setAuth] = useState()
   const [fieldErrors, setFieldErrors] = useState({});
 
   const navigate = useNavigate();
@@ -63,6 +67,17 @@ export default function SignIn({ setLoggedIn }) {
     if (response.data.success) {
       toast.success(response.data.message);
       setLoggedIn(true);
+
+      setAuth({
+        ...auth,
+        user: response.data.user,
+        token : response.data.token
+      })
+
+
+      localStorage.setItem('auth' , JSON.stringify(response.data))
+
+
       navigate("/");
     } else {
       if (response.data.message) {

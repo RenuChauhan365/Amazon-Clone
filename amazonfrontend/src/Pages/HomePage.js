@@ -87,6 +87,8 @@ function HomePage({ product }) {
           </button>
         </div>
  <div>
+
+  
  </div>
       </div>
       <Footer/>
