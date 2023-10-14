@@ -9,7 +9,7 @@ import Login from "./Pages/Auth/Login";
 import Pagenotfound from "./Pages/Pagenotfound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Product from "./components/Product/Product";
+import Product from "./components/Product/Products";
 import Header from "./components/Layout/Header";
 
 function App() {
@@ -24,9 +24,7 @@ function App() {
         <Route path="/auth/register" element={<Register/>}></Route>
         <Route path="/auth/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/auth/login" element={<Login/>}></Route>
-
          <Route path="/product" element ={<Product/> }> </Route>
-
         <Route path="*" element={<Pagenotfound/>}></Route>
       </Routes>
       <ToastContainer />
