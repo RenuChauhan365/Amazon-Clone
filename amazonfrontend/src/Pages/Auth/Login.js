@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -7,33 +7,83 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { NavLink,useNavigate} from "react-router-dom";
-
+import { NavLink, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 const defaultTheme = createTheme();
 
 export default function SignIn({ setLoggedIn }) {
 
 
-	const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
 
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 6;
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-		if (data.get("email") === "renu24793@gmail.com" && data.get("password") === "Ren123456") {
-      setLoggedIn(true); // Update the login status to true
-      navigate("/");
-    } else {
-      // Handle authentication failure (display error message or redirect to an error page)
-      console.log("Authentication failed");
+
+    const errors = {};
+
+    if (!validateEmail(email)) {
+      errors.email = "Invalid email address";
     }
 
+    if (!validatePassword(password)) {
+      errors.password = "Password must be at least 6 characters long";
+    }
 
-		navigate("/");
+    if (Object.keys(errors).length > 0) {
+      // There are validation errors, update the state and stop form submission
+      setFieldErrors(errors);
+      return;
+    }
 
+    const userData = {
+      email: email,
+      password: password,
+    };
+
+    try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API}/api/auth/login`,
+      userData
+    );
+
+    if (response.data.success) {
+      toast.success(response.data.message);
+      setLoggedIn(true);
+      navigate("/");
+    } else {
+      if (response.data.message) {
+        toast.error(response.data.message);
+      }
+
+      if (response.data.errors) {
+        const errorObj = {};
+        response.data.errors.forEach((error) => {
+          errorObj[error.field] = error.message;
+        });
+        setFieldErrors(errorObj);
+      } else {
+        setFieldErrors({});
+        toast.error("Login failed");
+      }
+    }}
+    catch (error) {
+      // Handle network errors or other exceptions
+      toast.error("Invalid credentials");
+    }
   };
 
   return (
@@ -82,6 +132,23 @@ export default function SignIn({ setLoggedIn }) {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => {
+                if (!email) {
+                  setFieldErrors((prevErrors) => ({
+                    ...prevErrors,
+                    email: "Email is required.",
+                  }));
+                } else {
+                  setFieldErrors((prevErrors) => ({
+                    ...prevErrors,
+                    email: undefined,
+                  }));
+                }
+              }}
+              error={fieldErrors.email !== undefined}
+              helperText={fieldErrors.email}
             />
             <TextField
               margin="normal"
@@ -92,6 +159,23 @@ export default function SignIn({ setLoggedIn }) {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={() => {
+                if (!password) {
+                  setFieldErrors((prevErrors) => ({
+                    ...prevErrors,
+                    password: "password is required.",
+                  }));
+                } else {
+                  setFieldErrors((prevErrors) => ({
+                    ...prevErrors,
+                    password: undefined,
+                  }));
+                }
+              }}
+              error={fieldErrors.password !== undefined}
+              helperText={fieldErrors.password}
             />
 
             <Button

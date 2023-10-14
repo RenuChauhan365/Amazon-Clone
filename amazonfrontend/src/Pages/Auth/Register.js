@@ -1,4 +1,4 @@
-import React ,{useState} from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -7,26 +7,24 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { NavLink , useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 const defaultTheme = createTheme();
 
 export default function Register() {
-
-
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [lastName, setLastName] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
+
   const navigate = useNavigate();
 
-
-	const handleSubmit = async (e) => {
-
-		e.preventDefault();
-		try {
-			 const userData = {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userData = {
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -41,15 +39,26 @@ export default function Register() {
       console.log(response.data);
 
       if (response.data.success) {
-        toast.success(response.data.message);
+        toast.success(" Registration Successful, please verify your email.");
         navigate("/login");
       } else {
-        toast.error(response.data.message);
+        if (response.data.errors) {
+          const errorObj = {};
+          response.data.errors.forEach((error) => {
+            errorObj[error.field] = error.message;
+          });
+          setFieldErrors(errorObj);
+        } else {
+          setFieldErrors({});
+          toast.error("Registration failed");
+        }
       }
-		} catch (error) {
-			console.error(error);
-		}
-	};
+    } catch (error) {
+      console.error(error);
+      toast.error("Invalid Details");
+
+    }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -97,11 +106,26 @@ export default function Register() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-									value={firstName}
-									onChange={(e) => setFirstName(e.target.value)}
-
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  onBlur={() => {
+                    if (!firstName) {
+                      setFieldErrors((prevErrors) => ({
+                        ...prevErrors,
+                        firstName: "First Name is required.",
+                      }));
+                    } else {
+                      setFieldErrors((prevErrors) => ({
+                        ...prevErrors,
+                        firstName: undefined,
+                      }));
+                    }
+                  }}
+                  error={fieldErrors.firstName !== undefined}
+                  helperText={fieldErrors.firstName}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
@@ -110,9 +134,23 @@ export default function Register() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-									value={lastName}
-									onChange={(e) => setLastName(e.target.value)}
-
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  onBlur={() => {
+                    if (!lastName) {
+                      setFieldErrors((prevErrors) => ({
+                        ...prevErrors,
+                        lastName: "Last Name is required.",
+                      }));
+                    } else {
+                      setFieldErrors((prevErrors) => ({
+                        ...prevErrors,
+                        lastName: undefined,
+                      }));
+                    }
+                  }}
+                  error={fieldErrors.lastName !== undefined}
+                  helperText={fieldErrors.lastName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -123,9 +161,25 @@ export default function Register() {
                   label="Email"
                   name="email"
                   autoComplete="email"
-									value={email}
-									onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
 
+                  onBlur={() => {
+                    if (!email) {
+                      setFieldErrors((prevErrors) => ({
+                        ...prevErrors,
+                        email: "Email is required.",
+                      }));
+                    } else {
+                      setFieldErrors((prevErrors) => ({
+                        ...prevErrors,
+                        email: undefined,
+                      }));
+                    }
+                  }}
+
+                  error={fieldErrors.email !== undefined}
+                  helperText={fieldErrors.email}
                 />
               </Grid>
 
@@ -138,13 +192,27 @@ export default function Register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-									value={password}
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
 
+                  onBlur={() => {
+                    if (!password) {
+                      setFieldErrors((prevErrors) => ({
+                        ...prevErrors,
+                        password: "Password is required.",
+                      }));
+                    } else {
+                      setFieldErrors((prevErrors) => ({
+                        ...prevErrors,
+                        password: undefined,
+                      }));
+                    }
+                  }}
+
+                  error={fieldErrors.password !== undefined}
+                  helperText={fieldErrors.password}
                 />
-
               </Grid>
-
             </Grid>
             <Button
               type="submit"

@@ -1,4 +1,4 @@
-import * as React from "react";
+import  React , {useState} from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -10,14 +10,27 @@ import { NavLink } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function ForgotPassword() {
+  const [email, setEmail] = useState("");  // State to store email input
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    fetch("/api/forgot-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);  // Handle the response from the backend if needed
+      })
+      .catch(error => {
+        console.error("Error:", error);  // Handle errors if any
+      });
+
   };
 
   return (
@@ -66,6 +79,9 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}  // Bind input value to the 'email' state
+              onChange={(e) => setEmail(e.target.value)}  // Update 'email' state on input change
+    
             />
 
 

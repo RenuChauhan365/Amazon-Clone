@@ -10,7 +10,8 @@ import Pagenotfound from "./Pages/Pagenotfound";
 import Header from "./Components/Layout/Header";
 import Logout from "./Pages/Auth/Logout";
 import Product from "./Pages/User/Product";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 function App() {
@@ -36,13 +37,14 @@ function App() {
     <Header isLoggedIn={isLoggedIn} />
       <Routes>
         <Route path="/" element={<HomePage product={product} />}></Route>
-        <Route path="/register" element={<Register  setLoggedIn={setLoggedIn}/>}></Route>
+        <Route path="/auth/register" element={<Register  setLoggedIn={setLoggedIn}/>}></Route>
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/login" element={<Login  setLoggedIn={setLoggedIn} />}></Route>
         <Route path="*" element={<Pagenotfound />}></Route>
         <Route path="/logout"  element={<Logout open={true} handleClose={() => {}} handleLogout={handleLogout} />}/>
         <Route path="/product" element ={<Product product={product} /> }></Route>
       </Routes>
+      <ToastContainer />
     </>
   );
 }
