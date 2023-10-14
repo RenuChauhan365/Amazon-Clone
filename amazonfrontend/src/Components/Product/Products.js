@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../Redux/productActions';
-import ProductCard from './ProductCard';
 
 const Products = () => {
 
@@ -15,6 +14,7 @@ const Products = () => {
   console.log('Products:', products);
   console.log('Loading:', loading);
 
+
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
@@ -23,13 +23,33 @@ const Products = () => {
     return <div>Loading...</div>;
   }
   return (
-    <div>
+    <>
+<div className='container mt-5'>
+<div className='row'>
 
-      <h1>all Product</h1>
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+{products.map((product) => (
+
+  <div className="col-lg-3 col-md-4 col-sm-6 mb-4" key={product.id}>
+
+    <div className='card'>
+    <div className="card-body">
+      <div style={{ color: 'black' }} className='card-img-top'> <img src={product.image} alt="img" height= '200px' width = '300px' /> </div>
+    <h5 className="card-title">{product.name}</h5>
+    <p className="card-text">{product.description}</p>
+     </div>
+
+      <div  style={{ color: 'black' }}>$ {product.price}</div>
+      <div  style={{ color: 'black' }}>{product.stock}</div>
+      <div  style={{ color: 'black' }}>{product.ratings}</div>
+
     </div>
+
+
+       </div>
+     ) )}
+      </div>
+       </div>
+    </>
   )
 };
 

@@ -26,3 +26,12 @@
   height: 60vh;
 
 }
+
+
+.product-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Each column is at least 300px wide */
+  grid-gap: 20px; /* Gap between the grid items */
+  justify-content: center; /* Center the grid items horizontally */
+  padding: 20px; /* Add some padding around the grid */
+}
