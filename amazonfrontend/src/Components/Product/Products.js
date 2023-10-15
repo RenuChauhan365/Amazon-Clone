@@ -6,6 +6,8 @@ import { Button } from "@mui/material";
 import ViewDetailsIcon from "@mui/icons-material/Visibility";
 import AddToCartIcon from "@mui/icons-material/AddShoppingCart";
 import {addToCart} from "../../Redux/cartSlice";
+import ProductDetails from "./ProductDetails";
+import Rating from '@mui/material/Rating';
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -37,6 +39,7 @@ const Products = () => {
               key={product.id}
             >
               <div className="card">
+
                 <div className="card-body">
                   <div
                     className="card-img-top card-img-cover"
@@ -46,14 +49,22 @@ const Products = () => {
                   <p className="card-text">{product.description}</p>
                 </div>
 
-                <div style={{ color: "black" }}>$ {product.price}</div>
-                <div style={{ color: "black" }}>{product.stock}</div>
-                <div style={{ color: "black" }}>{product.ratings}</div>
+                <p style={{ color: "black",  marginLeft:'15px'}}> Price : $ {product.price}</p>
+                <p style={{ color: "black" , marginLeft:'15px' }}> In Stock : {product.stock}</p>
+
+                 <Rating
+                  name="product-rating"
+                  value={product.ratings}
+                  precision={0.5}
+                  readOnly >
+
+                 </Rating>
+                {/*<div style={{ color: "black" }}>{product.ratings}</div>*/}
 
                 <div className="d-flex">
                   <Button
                     component={NavLink}
-                    to="/details"
+                    to={`/product/details/${product.id}`}
                     variant="contained"
                     color="primary"
                     startIcon={<ViewDetailsIcon />}
@@ -76,18 +87,22 @@ const Products = () => {
                       backgroundColor: "#ffffff",
                       color: "black",
                       margin: "15px 15px 15px 15px",
-                      "&:hover": { backgroundColor: "#1976d2" },
-                    }}
+                      "&:hover": { backgroundColor: "#1976d2" },  }} >
 
-                  >
                     <small>Add Cart</small>
                   </Button>
                 </div>
               </div>
             </div>
           ))}
+
+<ProductDetails product={products}></ProductDetails>
+
         </div>
+
       </div>
+
+
     </>
   );
 };
