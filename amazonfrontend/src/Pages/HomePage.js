@@ -103,7 +103,7 @@ function HomePage() {
 
 
       {/*<pre> {JSON.stringify(auth, null, 4)} </pre>*/}
-      <Footer />
+     
     </>
   );
 }

@@ -5,10 +5,10 @@ import { selectCartItems, selectTotalQuantity, selectTotalPrice } from '../../Re
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const cartItems = useSelector(selectCartItems);
-  const totalQuantity = useSelector(selectTotalQuantity);
-  const totalPrice = useSelector(selectTotalPrice);
-
+  const cartItems = useSelector(state => state.Cart.item);
+  const totalQuantity = useSelector(state => state.Cart.totalQuantity);
+  const totalPrice = useSelector(state => state.Cart.totalPrice);
+console.log(cartItems)
   const handleAddToCart = (productId) => {
     dispatch(addItemToCart(productId));
   };

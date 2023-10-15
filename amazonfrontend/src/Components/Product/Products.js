@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../Redux/productActions";
-import { addItemToCart } from "../../Redux/cartAction";
 import { NavLink } from "react-router-dom";
 import { Button } from "@mui/material";
 import ViewDetailsIcon from "@mui/icons-material/Visibility";
 import AddToCartIcon from "@mui/icons-material/AddShoppingCart";
+import {addToCart} from "../../Redux/cartSlice";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -20,7 +20,8 @@ const Products = () => {
 
 
   const handleAddToCart = (productId) => {
-    dispatch(addItemToCart(productId)); // Dispatch the action to add item to cart
+    console.log(productId );
+    dispatch(addToCart({productId ,quantity:1})); // Dispatch the action to add item to cart
   };
 
   if (loading) {
@@ -67,7 +68,7 @@ const Products = () => {
                     Details
                   </Button>
                   <Button
-                  onClick={() => handleAddToCart(product.id)}
+                  onClick={() => handleAddToCart(product.id , 1)}
                     variant="contained"
                     color="primary"
                     startIcon={<AddToCartIcon/>}

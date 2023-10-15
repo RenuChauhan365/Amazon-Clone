@@ -1,4 +1,4 @@
-import React from "react";
+import React  , {useEffect}from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,13 +13,15 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../../Context/Auth";
 import { useSelector } from "react-redux";
 
-
-
 const Header = () => {
 
   const [auth, setAuth] = useAuth();
   const totalQuantity = useSelector((state) => state.cart.totalQuantity); // Get total quantity from Redux store
-console.log(totalQuantity)
+
+useEffect(() => {
+  console.log("Total Quantity Updated:", totalQuantity);
+}, [totalQuantity]);
+
 
   const handleLogout = () => {
     setAuth({
@@ -32,7 +34,10 @@ console.log(totalQuantity)
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "black" }}>
+
+    <>
+    <div className="header">
+    <AppBar className="header" position="static" sx={{ backgroundColor: "black" }}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Typography variant="h6" component="div">
           <img
@@ -157,6 +162,8 @@ console.log(totalQuantity)
         </div>
       </Toolbar>
     </AppBar>
+    </div>
+    </>
   );
 };
 

@@ -48,3 +48,14 @@
 .box:hover {
   box-shadow: 2px 5px 8px white;
 }
+
+
+
+/* App.css or in a <style> tag in your component */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #ffffff; /* Set your desired background color */
+  border-bottom: 1px solid #ccc; /* Optional: Add a border at the bottom for separation */
+}

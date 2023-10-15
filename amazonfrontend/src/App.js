@@ -13,6 +13,7 @@ import Product from "./components/Product/Products";
 import Header from "./components/Layout/Header";
 import ProductDetails from './components/Product/ProductDetails'
 import Cart from "./components/Cart/Cart";
+import Footer from "./components/Layout/Footer";
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
         <Route path="*" element={<Pagenotfound/>}></Route>
 
       </Routes>
+      <Footer/>
       <ToastContainer />
       </Router>
     </>
