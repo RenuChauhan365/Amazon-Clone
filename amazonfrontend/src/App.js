@@ -11,6 +11,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Product from "./components/Product/Products";
 import Header from "./components/Layout/Header";
+import ProductDetails from './components/Product/ProductDetails'
+import Cart from "./components/Cart/Cart";
 
 function App() {
 
@@ -24,8 +26,14 @@ function App() {
         <Route path="/auth/register" element={<Register/>}></Route>
         <Route path="/auth/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/auth/login" element={<Login/>}></Route>
+
          <Route path="/product" element ={<Product/> }> </Route>
+        <Route path="/Product/details" component={<ProductDetails/>} />
+
+
+        <Route path="/cart" component={<Cart/>} />
         <Route path="*" element={<Pagenotfound/>}></Route>
+
       </Routes>
       <ToastContainer />
     </>

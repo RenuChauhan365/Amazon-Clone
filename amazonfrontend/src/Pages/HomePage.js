@@ -1,9 +1,7 @@
-import React from "react";
+import React , {useEffect} from "react";
 import Footer from "../components/Layout/Footer";
-import { useAuth } from "../Context/Auth";
 
 function HomePage() {
-  const [auth, setAuth] = useAuth();
 
   return (
     <>
@@ -87,10 +85,24 @@ function HomePage() {
             <span className="visually-hidden">Next</span>
           </button>
         </div>
+
+{/*      */}
+
+
         <div>
+
+
+
+
         </div>
+
+
       </div>
-      <pre> {JSON.stringify(auth, null, 4)} </pre>
+
+
+
+
+      {/*<pre> {JSON.stringify(auth, null, 4)} </pre>*/}
       <Footer />
     </>
   );

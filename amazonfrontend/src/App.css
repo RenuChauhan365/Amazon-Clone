@@ -35,3 +35,16 @@
   justify-content: center; /* Center the grid items horizontally */
   padding: 20px; /* Add some padding around the grid */
 }
+
+
+.card-img-cover {
+  background-size: cover;
+  background-position: center;
+  height: 200px; /* You can adjust the height according to your design */
+  width: 100%; /* Ensure the image covers the entire width of the parent element */
+}
+
+
+.box:hover {
+  box-shadow: 2px 5px 8px white;
+}

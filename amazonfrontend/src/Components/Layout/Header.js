@@ -12,12 +12,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../Context/Auth";
 
+
+
 const Header = () => {
+
   const [auth, setAuth] = useAuth();
+
 
   const handleLogout = () => {
     setAuth({
-
       user: null,
       token: "",
     });
@@ -134,9 +137,19 @@ const Header = () => {
             </>
           )}
 
-          <IconButton color="inherit" style={{ marginLeft: 20 }}>
-            <ShoppingCartIcon />
-          </IconButton>
+
+        <div style={{ display: "flex" }}>
+          <NavLink
+            to="/cart"
+            color="inherit"
+            style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
+          >
+            <IconButton color="inherit">
+              <ShoppingCartIcon />
+            </IconButton>
+          </NavLink>
+        </div>
+
         </div>
       </Toolbar>
     </AppBar>
