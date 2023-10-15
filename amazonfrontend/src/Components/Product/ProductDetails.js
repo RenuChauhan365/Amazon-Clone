@@ -1,8 +1,10 @@
 import React , { useEffect, useState }  from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import {  Card, CardContent, Typography } from "@mui/material";
+import { Button, Card, CardContent, Typography } from "@mui/material";
 import Rating from '@mui/material/Rating';
+import { NavLink } from "react-router-dom";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 const ProductDetails = () => {
@@ -35,7 +37,8 @@ const ProductDetails = () => {
 
 	console.log(product)
   return (
-    <div className="col-lg-3 col-md-4 col-sm-6 mb-4 box" key={product.id}>
+    <div className="col-lg-3 col-md-4 col-sm-6 mb-4 box
+		product-details-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }} key={product.id}>
       <Card>
 
 			<div className=".card-img-cover">
@@ -67,7 +70,13 @@ const ProductDetails = () => {
         <div className="d-flex justify-content-between p-2">
 
         </div>
+				<Button>
+				<NavLink to='/product'>
+				<ArrowBackIcon/> </NavLink>
+			</Button>
       </Card>
+
+
     </div>
   );
 };

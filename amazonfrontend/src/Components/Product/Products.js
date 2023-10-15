@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect ,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../Redux/productActions";
 import { NavLink } from "react-router-dom";
@@ -9,9 +9,12 @@ import {addToCart} from "../../Redux/cartSlice";
 import ProductDetails from "./ProductDetails";
 import Rating from '@mui/material/Rating';
 import Cart from "../Cart/Cart";
+import WishlistIcon from "@mui/icons-material/Favorite";
+import IconButton from "@mui/material/IconButton";
 
 const Products = () => {
   const dispatch = useDispatch();
+  const [wishlist, setWishlist] = useState([]);
 
   const products = useSelector((state) => state.products.products);
   const loading = useSelector((state) => state.products.loading);
@@ -21,6 +24,18 @@ const Products = () => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
+  const handleAddToWishlist = (productId) => {
+    // Handle adding/removing product to/from wishlist
+    if (wishlist.includes(productId)) {
+      setWishlist(wishlist.filter((id) => id !== productId));
+    } else {
+      setWishlist([...wishlist, productId]);
+    }
+  };
+
+  const isInWishlist = (productId) => {
+    return wishlist.includes(productId);
+  };
 
   const handleAddToCart = (productId ,price_per_unit) => {
     dispatch(addToCart({productId ,quantity:1,price_per_unit })); // Dispatch the action to add item to cart
@@ -63,6 +78,9 @@ const Products = () => {
 
                  </Rating>
 
+
+                 <hr/>
+
                 <div className="d-flex">
                   <Button
                     component={NavLink}
@@ -78,8 +96,9 @@ const Products = () => {
                       "&:hover": { backgroundColor: "#edbee8" },
                     }}
                   >
-                    Details
+
                   </Button>
+
                   <Button
                   onClick={() => handleAddToCart(product.id , product.price)}
                     variant="contained"
@@ -91,19 +110,24 @@ const Products = () => {
                       margin: "15px 15px 15px 15px",
                       "&:hover": { backgroundColor: "#1976d2" },  }} >
 
-                    <small>Add Cart</small>
+
                   </Button>
+
+                  <IconButton
+                    onClick={() => handleAddToWishlist(product.id)}
+                    color={isInWishlist(product.id) ? "secondary" : "danger"}
+                  >
+                    <WishlistIcon />
+                  </IconButton>
                 </div>
               </div>
             </div>
           ))}
 
-<ProductDetails product={products}></ProductDetails>
+    <ProductDetails product={products}></ProductDetails>
         </div>
 
       </div>
-
-
     </>
   );
 };

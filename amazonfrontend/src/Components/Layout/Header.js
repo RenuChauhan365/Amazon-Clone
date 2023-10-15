@@ -14,6 +14,8 @@ import {
   InputBase
 } from "@mui/material";
 
+
+
 const Header = () => {
 
   const [auth, setAuth] = useAuth();
@@ -44,8 +46,8 @@ useEffect(() => {
   return (
 
     <>
-    <div className="header">
-    <AppBar className="header" position="static" sx={{ backgroundColor: "black" }}>
+    <div  className="header">
+    <AppBar  position="static" sx={{ backgroundColor: "black" }}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Typography variant="h6" component="div">
           <img
@@ -82,22 +84,28 @@ useEffect(() => {
           <NavLink
             to="/"
             color="inherit"
+
+            className="nav-link"
             style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
           >
             Home
           </NavLink>
 
           <NavLink
+          className="nav-link"
             to="/order"
             color="inherit"
+
             style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
           >
             Dashboard
           </NavLink>
 
           <NavLink
+          className="nav-link"
             to="/product"
             color="inherit"
+
             style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
           >
             Product
@@ -107,20 +115,26 @@ useEffect(() => {
           !auth.user? (
             <>
               <NavLink
+              className="nav-link"
                 to="/auth/register"
+
                 color="inherit"
                 style={{
                   textDecoration: "none",
                   color: "white",
                   marginLeft: 20,
-                  marginRight:2
+                  marginRight:2,
+
+
                 }}
               >
                 SignUp /
               </NavLink>
               <NavLink
                 to="/auth/login"
+                className="nav-link"
                 color="inherit"
+
                 style={{
                   textDecoration: "none",
                   color: "white",
@@ -139,7 +153,7 @@ useEffect(() => {
             <>
               <NavLink
                 onClick={handleLogout}
-
+                className="nav-link"
                 color="inherit"
                 style={{
                   textDecoration: "none",
@@ -161,12 +175,13 @@ useEffect(() => {
           <NavLink
             to="/cart"
             color="inherit"
+            className="nav-link"
             style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
           >
             <IconButton color="inherit">
               <ShoppingCartIcon />
             </IconButton>
-            <span style={{ marginLeft: 5 }}>{totalQuantity}</span>
+            <span className="cart-quantity"  style={{ marginLeft: 5 }}>{totalQuantity}</span>
 
           </NavLink>
         </div>
