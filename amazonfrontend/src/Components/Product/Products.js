@@ -58,7 +58,7 @@ const Products = () => {
                       color: "black",
                       margin: "15px 10px 15px 10px",
 
-                      "&:hover": { backgroundColor: "pink" },
+                      "&:hover": { backgroundColor: "#edbee8" },
                     }}
                   >
                     Details
