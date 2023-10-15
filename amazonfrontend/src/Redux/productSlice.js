@@ -9,18 +9,15 @@ const productSlice = createSlice({
   },
   reducers: {
     fetchProductsStart(state , action) {
-      console.log('fetchProductsStart action:', action);
       state.loading = true;
       state.error = null;
     },
     fetchProductsSuccess(state, action) {
-      console.log('fetchProductsSuccess action:', action);
       state.loading = false;
       state.error = null; // this is for the clear previous errors
       state.products = action.payload;
     },
     fetchProductsFailure(state, action) {
-      console.log('fetchProductsSuccess action:', action);
       state.loading = false;
       state.error = action.payload;
     },

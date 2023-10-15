@@ -11,13 +11,15 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../Context/Auth";
+import { useSelector } from "react-redux";
 
 
 
 const Header = () => {
 
   const [auth, setAuth] = useAuth();
-
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity); // Get total quantity from Redux store
+console.log(totalQuantity)
 
   const handleLogout = () => {
     setAuth({
@@ -57,7 +59,7 @@ const Header = () => {
           <IconButton
             type="submit"
             aria-label="search"
-            style={{ marginRight: 5 }}
+            style={{ margainRight: 5 }}
           >
             <SearchIcon />
           </IconButton>
@@ -147,6 +149,8 @@ const Header = () => {
             <IconButton color="inherit">
               <ShoppingCartIcon />
             </IconButton>
+            <span style={{ marginLeft: 5 }}>{totalQuantity}</span>
+
           </NavLink>
         </div>
 

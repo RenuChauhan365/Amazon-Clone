@@ -2,7 +2,7 @@ import "./App.css";
 import React  from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import HomePage from "./Pages/HomePage";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router , Routes, Route } from "react-router-dom";
 import Register from "./Pages/Auth/Register";
 import ForgotPassword from "./Pages/Auth/ForgotPassword";
 import Login from "./Pages/Auth/Login";
@@ -19,6 +19,7 @@ function App() {
 
   return (
     <>
+    <Router>
     <Header/>
       <Routes>
         <Route path="/" element={<HomePage/>}></Route>
@@ -31,11 +32,12 @@ function App() {
         <Route path="/Product/details" component={<ProductDetails/>} />
 
 
-        <Route path="/cart" component={<Cart/>} />
+        <Route path="/cart" element={<Cart/>} />
         <Route path="*" element={<Pagenotfound/>}></Route>
 
       </Routes>
       <ToastContainer />
+      </Router>
     </>
   );
 }

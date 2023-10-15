@@ -4,7 +4,8 @@ import { addToCart, removeFromCart, clearCart } from '../Redux/cartSlice';
 export const addItemToCart = (productId) => async (dispatch) => {
   try {
     const response = await axios.post(`${process.env.REACT_APP_API}/api/cart/add`, { productId });
-    const newItem = response.data.cartItem;
+    console.log(response.data)
+		const newItem = response.data.cartItem;
     dispatch(addToCart(newItem));
   } catch (error) {
 		console.log(error.message);

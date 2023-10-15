@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../Redux/productActions";
+import { addItemToCart } from "../../Redux/cartAction";
 import { NavLink } from "react-router-dom";
 import { Button } from "@mui/material";
 import ViewDetailsIcon from "@mui/icons-material/Visibility";
@@ -10,15 +11,17 @@ const Products = () => {
   const dispatch = useDispatch();
 
   const products = useSelector((state) => state.products.products);
-  console.warn(products);
   const loading = useSelector((state) => state.products.loading);
 
-  console.log("Products:", products);
-  console.log("Loading:", loading);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
+
+  const handleAddToCart = (productId) => {
+    dispatch(addItemToCart(productId)); // Dispatch the action to add item to cart
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -64,17 +67,17 @@ const Products = () => {
                     Details
                   </Button>
                   <Button
-                    component={NavLink}
-                    to="/cart"
+                  onClick={() => handleAddToCart(product.id)}
                     variant="contained"
                     color="primary"
-                    startIcon={<AddToCartIcon />}
+                    startIcon={<AddToCartIcon/>}
                     sx={{
                       backgroundColor: "#ffffff",
                       color: "black",
                       margin: "15px 15px 15px 15px",
                       "&:hover": { backgroundColor: "#1976d2" },
                     }}
+
                   >
                     <small>Add Cart</small>
                   </Button>
