@@ -8,6 +8,7 @@ import AddToCartIcon from "@mui/icons-material/AddShoppingCart";
 import {addToCart} from "../../Redux/cartSlice";
 import ProductDetails from "./ProductDetails";
 import Rating from '@mui/material/Rating';
+import Cart from "../Cart/Cart";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -21,18 +22,11 @@ const Products = () => {
   }, [dispatch]);
 
 
-  const handleAddToCart = (productId) => {
-    console.log(productId );
-    dispatch(addToCart({productId ,quantity:1})); // Dispatch the action to add item to cart
+  const handleAddToCart = (productId ,price_per_unit) => {
+    dispatch(addToCart({productId ,quantity:1,price_per_unit })); // Dispatch the action to add item to cart
   };
 
 
-  const handleDetailsClick = (productId) => {
-    const selectedProduct = products.find((product) => product.id === productId);
-    localStorage.setItem("selectedProduct", JSON.stringify(selectedProduct));
-  };
-
-  
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -68,7 +62,6 @@ const Products = () => {
                   readOnly >
 
                  </Rating>
-                {/*<div style={{ color: "black" }}>{product.ratings}</div>*/}
 
                 <div className="d-flex">
                   <Button
@@ -88,7 +81,7 @@ const Products = () => {
                     Details
                   </Button>
                   <Button
-                  onClick={() => handleAddToCart(product.id , 1)}
+                  onClick={() => handleAddToCart(product.id , product.price)}
                     variant="contained"
                     color="primary"
                     startIcon={<AddToCartIcon/>}
@@ -106,7 +99,6 @@ const Products = () => {
           ))}
 
 <ProductDetails product={products}></ProductDetails>
-
         </div>
 
       </div>

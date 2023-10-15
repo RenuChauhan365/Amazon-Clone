@@ -14,6 +14,7 @@ import Header from "./components/Layout/Header";
 import ProductDetails from './components/Product/ProductDetails'
 import Cart from "./components/Cart/Cart";
 import Footer from "./components/Layout/Footer";
+import OrderListing from "./components/Order/OrderListing";
 
 function App() {
 
@@ -32,8 +33,10 @@ function App() {
          <Route path="/product" element ={<Product/> }> </Route>
         <Route path="/product/details/:pid" element={<ProductDetails/>} />
 
-
         <Route path="/cart" element={<Cart/>} />
+        <Route path="/order" element={<OrderListing/>} />
+
+
         <Route path="*" element={<Pagenotfound/>}></Route>
 
       </Routes>

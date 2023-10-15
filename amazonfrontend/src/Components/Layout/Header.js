@@ -1,37 +1,45 @@
-import React  , {useEffect}from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  InputBase,
-} from "@mui/material";
 
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../Context/Auth";
 import { useSelector } from "react-redux";
+import React, {useEffect ,useState}from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  InputBase
+} from "@mui/material";
 
 const Header = () => {
 
   const [auth, setAuth] = useAuth();
   const totalQuantity = useSelector((state) => state.cart.totalQuantity); // Get total quantity from Redux store
+  const navigate = useNavigate();
+  const [showLogoutAlert, setShowLogoutAlert] = useState(false);
+
+
+  const handleLogout = () => {
+    setShowLogoutAlert(true);
+  };
 
 useEffect(() => {
   console.log("Total Quantity Updated:", totalQuantity);
 }, [totalQuantity]);
 
-
-  const handleLogout = () => {
+  const confirmLogout = () => {
     setAuth({
       user: null,
       token: "",
     });
-
     localStorage.removeItem("auth");
-
+    navigate("/auth/login");
+    setShowLogoutAlert(false);
   };
+
 
   return (
 
@@ -80,11 +88,11 @@ useEffect(() => {
           </NavLink>
 
           <NavLink
-            to="/"
+            to="/order"
             color="inherit"
             style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
           >
-            Order
+            Dashboard
           </NavLink>
 
           <NavLink
@@ -131,7 +139,7 @@ useEffect(() => {
             <>
               <NavLink
                 onClick={handleLogout}
-                to="/auth/login"
+
                 color="inherit"
                 style={{
                   textDecoration: "none",
@@ -141,6 +149,10 @@ useEffect(() => {
               >
                 Logout
               </NavLink>
+
+
+
+
             </>
           )}
 
@@ -159,10 +171,22 @@ useEffect(() => {
           </NavLink>
         </div>
 
+
         </div>
+
+        {showLogoutAlert && (
+                  <div>
+                    <p>Are you sure you want to logout?</p>
+                    <button onClick={confirmLogout}>Yes</button>
+                    <button onClick={() => setShowLogoutAlert(false)}>No</button>
+                  </div>
+                )}
       </Toolbar>
     </AppBar>
+
+
     </div>
+
     </>
   );
 };
