@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import  {AuthProvider} from './Context/Auth'
 import { Provider } from 'react-redux';
+
+
 import store from './Store/store';
 
 

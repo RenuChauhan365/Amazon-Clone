@@ -26,9 +26,18 @@ const Products = () => {
     dispatch(addToCart({productId ,quantity:1})); // Dispatch the action to add item to cart
   };
 
+
+  const handleDetailsClick = (productId) => {
+    const selectedProduct = products.find((product) => product.id === productId);
+    localStorage.setItem("selectedProduct", JSON.stringify(selectedProduct));
+  };
+
+  
   if (loading) {
     return <div>Loading...</div>;
   }
+
+
   return (
     <>
       <div className="container mt-5">
