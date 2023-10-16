@@ -59,8 +59,8 @@ const Products = () => {
  const filteredProducts = products.filter((product) =>
  product.name.toLowerCase().includes(searchQuery.toLowerCase())
 );
-  // pagination
 
+  // pagination
   const indexOfLastItem = page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentProducts = filteredProducts.slice(
@@ -101,7 +101,7 @@ const Products = () => {
             <div
               className="col-lg-3 col-md-4 col-sm-6 mb-4 box"
               key={product.id}
-            >
+    >
               <div className="card">
 
                 <div className="card-body">
@@ -121,12 +121,8 @@ const Products = () => {
                   value={product.ratings}
                   precision={0.5}
                   readOnly >
-
                  </Rating>
-
-
                  <hr/>
-
                 <div className="d-flex">
                   <Button
                     component={NavLink}

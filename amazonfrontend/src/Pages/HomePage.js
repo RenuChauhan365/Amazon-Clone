@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../Redux/productActions";
 import { NavLink } from "react-router-dom";
@@ -11,31 +11,39 @@ import Rating from '@mui/material/Rating';
 import {toast} from 'react-toastify'
 import { isAuthenticated } from "../Context/Auth";
 
-
-
 function HomePage() {
 
   const dispatch = useDispatch();
-
+  const [page, setPage] = useState(1); // Current page number
   const products = useSelector((state) => state.products.products);
   const loading = useSelector((state) => state.products.loading);
+  const searchQuery = useSelector((state) => state.search.query); //  search state in Redux
+  const [itemsPerPage] = useState(8); // Number of items per page
 
+ // Filter products based on search query
+ const filteredProducts = products.filter((product) =>
+ product.name.toLowerCase().includes(searchQuery.toLowerCase())
+);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
 
+  const indexOfLastItem = page * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
   const handleAddToCart = (productId ,price_per_unit) => {
-
-
     if (!isAuthenticated()) {
       toast.error("Please login to add items to the cart.");
       return;
     }
-
-
-
     dispatch(addToCart({productId ,quantity:1,price_per_unit })); // Dispatch the action to add item to cart
   };
 
@@ -130,7 +138,7 @@ function HomePage() {
 
         <div className="container mt-5">
         <div className="row">
-          {products.map((product) => (
+          {currentProducts.map((product) => (
             <div
               className="col-lg-3 col-md-4 col-sm-6 mb-4 box"
               key={product.id}
