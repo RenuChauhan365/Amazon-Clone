@@ -2,22 +2,25 @@ import React, { useEffect ,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../Redux/productActions";
 import { NavLink } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Button ,Pagination } from "@mui/material";
 import ViewDetailsIcon from "@mui/icons-material/Visibility";
 import AddToCartIcon from "@mui/icons-material/AddShoppingCart";
 import {addToCart} from "../../Redux/cartSlice";
 import ProductDetails from "./ProductDetails";
 import Rating from '@mui/material/Rating';
-import Cart from "../Cart/Cart";
 import WishlistIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
+import {toast} from 'react-toastify'
+import { isAuthenticated } from "../../Context/Auth";
+
 
 const Products = () => {
   const dispatch = useDispatch();
   const [wishlist, setWishlist] = useState([]);
-
+  const [page, setPage] = useState(1); // Current page number
   const products = useSelector((state) => state.products.products);
   const loading = useSelector((state) => state.products.loading);
+  const [itemsPerPage] = useState(4); // Number of items per page
 
 
   useEffect(() => {
@@ -38,9 +41,26 @@ const Products = () => {
   };
 
   const handleAddToCart = (productId ,price_per_unit) => {
+
+
+    if (!isAuthenticated()) {
+      toast.error("Please login to add items to the cart.");
+      return;
+    }
+
     dispatch(addToCart({productId ,quantity:1,price_per_unit })); // Dispatch the action to add item to cart
   };
 
+
+  // pagination
+
+  const indexOfLastItem = page * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -50,8 +70,22 @@ const Products = () => {
   return (
     <>
       <div className="container mt-5">
+
+        {/*  pagination  */}
+
+        <Pagination
+          count={Math.ceil(products.length / itemsPerPage)}
+          page={page}
+          onChange={handlePageChange}
+          color="primary"
+          variant="outlined"
+          shape="rounded"
+          size="large"
+          style={{ marginBottom: "20px" }}
+        />
+
         <div className="row">
-          {products.map((product) => (
+          {currentProducts.map((product) => (
             <div
               className="col-lg-3 col-md-4 col-sm-6 mb-4 box"
               key={product.id}

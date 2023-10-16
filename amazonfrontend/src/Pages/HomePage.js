@@ -1,5 +1,3 @@
-
-
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../Redux/productActions";
@@ -10,6 +8,10 @@ import AddToCartIcon from "@mui/icons-material/AddShoppingCart";
 import {addToCart} from "../Redux/cartSlice";
 import ProductDetails from "../components/Product/ProductDetails";
 import Rating from '@mui/material/Rating';
+import {toast} from 'react-toastify'
+import { isAuthenticated } from "../Context/Auth";
+
+
 
 function HomePage() {
 
@@ -25,6 +27,15 @@ function HomePage() {
 
 
   const handleAddToCart = (productId ,price_per_unit) => {
+
+
+    if (!isAuthenticated()) {
+      toast.error("Please login to add items to the cart.");
+      return;
+    }
+
+
+
     dispatch(addToCart({productId ,quantity:1,price_per_unit })); // Dispatch the action to add item to cart
   };
 

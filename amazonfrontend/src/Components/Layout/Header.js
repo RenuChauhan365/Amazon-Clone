@@ -139,10 +139,6 @@ useEffect(() => {
               Login
               </NavLink>
 
-
-
-
-
             </>
           ) : (
             <>
