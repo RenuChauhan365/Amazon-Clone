@@ -195,11 +195,7 @@ export default function SignIn() {
               Continue
             </Button>
             <Grid container>
-              <Grid item xs>
-                <NavLink to="/auth/forgot-password" variant="body2">
-                  Forgot password?
-                </NavLink>
-              </Grid>
+
               <Grid item>
                 <NavLink to="/auth/register" variant="body2">
                   {"Don't have an account? Sign Up"}

@@ -9,6 +9,7 @@ const AuthProvider = ({ children }) => {
     token: "",
   });
 
+
   useEffect(() => {
     const data = localStorage.getItem("auth");
     if (data) {
@@ -19,7 +20,10 @@ const AuthProvider = ({ children }) => {
          token: parseData.token });
     }
   }, []);
-  
+
+
+
+
   return (
     <AuthContext.Provider value={[auth, setAuth]}>
       {children}
@@ -27,6 +31,17 @@ const AuthProvider = ({ children }) => {
   );
 };
 
+
+const isAuthenticated = () => {
+  const data = localStorage.getItem("auth");
+  if (data) {
+    const parseData = JSON.parse(data);
+    return !!parseData.token; // Returns true if token exists, else false
+  }
+  return false;
+};
+
+
 //custom hook
 const useAuth = () => useContext(AuthContext);
-export { useAuth, AuthProvider };
+export { useAuth, AuthProvider ,isAuthenticated };

@@ -17,6 +17,8 @@ import {
 
 
 const Header = () => {
+  const { isAuthenticated } = useAuth();
+
 
   const [auth, setAuth] = useAuth();
   const totalQuantity = useSelector((state) => state.cart.totalQuantity); // Get total quantity from Redux store
@@ -91,15 +93,7 @@ useEffect(() => {
             Home
           </NavLink>
 
-          <NavLink
-          className="nav-link"
-            to="/order"
-            color="inherit"
 
-            style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
-          >
-            Dashboard
-          </NavLink>
 
           <NavLink
           className="nav-link"
@@ -148,9 +142,19 @@ useEffect(() => {
 
 
 
+
             </>
           ) : (
             <>
+             <NavLink
+          className="nav-link"
+            to="/order"
+            color="inherit"
+
+            style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
+          >
+            Dashboard
+          </NavLink>
               <NavLink
                 onClick={handleLogout}
                 className="nav-link"
@@ -164,15 +168,7 @@ useEffect(() => {
                 Logout
               </NavLink>
 
-
-
-
-            </>
-          )}
-
-
-        <div style={{ display: "flex" }}>
-          <NavLink
+              <NavLink
             to="/cart"
             color="inherit"
             className="nav-link"
@@ -184,7 +180,11 @@ useEffect(() => {
             <span className="cart-quantity"  style={{ marginLeft: 5 }}>{totalQuantity}</span>
 
           </NavLink>
-        </div>
+
+
+
+            </>
+          )}
 
 
         </div>
