@@ -3,7 +3,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../Context/Auth";
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch } from "react-redux";
 import React, {useEffect ,useState}from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,17 +14,27 @@ import {
   InputBase
 } from "@mui/material";
 
+import { setSearchQuery } from '../../Redux/searchSlice'; // Import setSearchQuery action
+
 
 
 const Header = () => {
+
+  const dispatch = useDispatch();
+  const [searchQuery, setSearchQueryLocal] = useState('');
+
+  const handleSearchInputChange = (e) => {
+    const query = e.target.value;
+    setSearchQueryLocal(query);
+    dispatch(setSearchQuery(query)); // Dispatch the action to update search query in the Redux store
+  };
+
+
   const { isAuthenticated } = useAuth();
-
-
   const [auth, setAuth] = useAuth();
   const totalQuantity = useSelector((state) => state.cart.totalQuantity); // Get total quantity from Redux store
   const navigate = useNavigate();
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
-
 
   const handleLogout = () => {
     setShowLogoutAlert(true);
@@ -72,11 +82,13 @@ useEffect(() => {
             placeholder="Search Amazon.in"
             inputProps={{ "aria-label": "search" }}
             style={{ paddingLeft: 10 }}
+            value={searchQuery}
+            onChange={handleSearchInputChange}
           />
           <IconButton
             type="submit"
             aria-label="search"
-            style={{ margainRight: 5 }}
+            style={{ marginRight: 5 }}
           >
             <SearchIcon />
           </IconButton>

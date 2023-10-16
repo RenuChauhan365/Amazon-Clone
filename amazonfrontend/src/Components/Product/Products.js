@@ -15,12 +15,16 @@ import { isAuthenticated } from "../../Context/Auth";
 
 
 const Products = () => {
+
+
   const dispatch = useDispatch();
+
   const [wishlist, setWishlist] = useState([]);
   const [page, setPage] = useState(1); // Current page number
   const products = useSelector((state) => state.products.products);
   const loading = useSelector((state) => state.products.loading);
-  const [itemsPerPage] = useState(4); // Number of items per page
+  const searchQuery = useSelector((state) => state.search.query); //  search state in Redux
+  const [itemsPerPage] = useState(8); // Number of items per page
 
 
   useEffect(() => {
@@ -51,16 +55,24 @@ const Products = () => {
     dispatch(addToCart({productId ,quantity:1,price_per_unit })); // Dispatch the action to add item to cart
   };
 
-
+ // Filter products based on search query
+ const filteredProducts = products.filter((product) =>
+ product.name.toLowerCase().includes(searchQuery.toLowerCase())
+);
   // pagination
 
   const indexOfLastItem = page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
-
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
   const handlePageChange = (event, value) => {
     setPage(value);
   };
+
+// searching
+
 
   if (loading) {
     return <div>Loading...</div>;
