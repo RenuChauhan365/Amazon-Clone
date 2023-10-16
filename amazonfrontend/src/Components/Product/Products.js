@@ -120,6 +120,7 @@ const Products = () => {
                   name="product-rating"
                   value={product.ratings}
                   precision={0.5}
+                  style={{marginLeft:'15px'}}
                   readOnly >
                  </Rating>
                  <hr/>

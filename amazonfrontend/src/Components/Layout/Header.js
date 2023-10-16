@@ -21,6 +21,8 @@ import { setSearchQuery } from '../../Redux/searchSlice'; // Import setSearchQue
 const Header = () => {
 
   const dispatch = useDispatch();
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+
   const [searchQuery, setSearchQueryLocal] = useState('');
 
   const handleSearchInputChange = (e) => {
@@ -32,7 +34,6 @@ const Header = () => {
 
   const { isAuthenticated } = useAuth();
   const [auth, setAuth] = useAuth();
-  const totalQuantity = useSelector((state) => state.cart.totalQuantity); // Get total quantity from Redux store
   const navigate = useNavigate();
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
 
@@ -40,9 +41,10 @@ const Header = () => {
     setShowLogoutAlert(true);
   };
 
-useEffect(() => {
-  console.log("Total Quantity Updated:", totalQuantity);
-}, [totalQuantity]);
+  useEffect(() => {
+    localStorage.setItem('totalQuantity', totalQuantity);
+  }, [totalQuantity]);
+
 
   const confirmLogout = () => {
     setAuth({
