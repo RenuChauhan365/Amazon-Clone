@@ -1,14 +1,16 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, clearCart } from "../../Redux/cartSlice";
-import { Button, List, ListItem, ListItemText } from "@mui/material";
+import { Button, List, ListItem } from "@mui/material";
 import CartItem from "./CartItem";
+import {useNavigate} from "react-router-dom";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const totalPrice = useSelector((state) => state.cart.totalPrice.toFixed(2));
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));
@@ -17,6 +19,13 @@ const Cart = () => {
   const handleClearCart = () => {
     dispatch(clearCart());
   };
+
+
+  const handleCheckout = () =>{
+navigate("/order")
+  }
+
+
 
   return (
     <div>
@@ -29,9 +38,14 @@ const Cart = () => {
         <p>Total Price: {totalPrice}</p>
  </div>
  <div>
-        <Button onClick={handleClearCart} variant="contained" color="primary" style={{float:'right' , marginLeft:'200px'}}>
-          Clear Cart
+        <Button onClick={handleCheckout} variant="contained" color="success" style={{float:'right' , marginLeft:'200px'}}>
+        Checkout
         </Button>
+
+        <Button onClick={handleClearCart} variant="contained" color="info" style={{float:'right' , marginLeft:'200px'}}>
+               Clear Cart
+        </Button>
+
 
  </div>
 

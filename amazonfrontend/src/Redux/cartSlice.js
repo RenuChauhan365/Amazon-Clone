@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 // function for the store the totalQuantity ,totalPrice in localStorage
 const updateLocalStorage = (state) => {
   localStorage.setItem("cart", JSON.stringify(state.items));
@@ -9,8 +8,8 @@ const updateLocalStorage = (state) => {
 };
 
 
-
 export const cartSlice = createSlice({
+
   name: "cart",
 
   initialState: {
@@ -21,6 +20,7 @@ export const cartSlice = createSlice({
   reducers: {
 
     addToCart: (state, action) => {
+      //state.items.push(action.payload);
 			const { productId, quantity , price_per_unit , name , price , description ,image } = action.payload;
       const newItem = {
 				product_id : productId,

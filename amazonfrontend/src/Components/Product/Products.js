@@ -2,29 +2,31 @@ import React, { useEffect ,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../Redux/productActions";
 import { NavLink } from "react-router-dom";
-import { Button ,Pagination } from "@mui/material";
+import { Button ,Pagination ,CircularProgress  } from "@mui/material";
+import DoneIcon from "@mui/icons-material/Done";
 import ViewDetailsIcon from "@mui/icons-material/Visibility";
 import AddToCartIcon from "@mui/icons-material/AddShoppingCart";
-import {addToCart} from "../../Redux/cartSlice";
 import ProductDetails from "./ProductDetails";
 import Rating from '@mui/material/Rating';
 import WishlistIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import {toast} from 'react-toastify'
 import { isAuthenticated } from "../../Context/Auth";
+import { addToCart, selectCartItems } from "../../Redux/cartSlice";
 
 
 const Products = () => {
 
 
   const dispatch = useDispatch();
-
   const [wishlist, setWishlist] = useState([]);
   const [page, setPage] = useState(1); // Current page number
   const products = useSelector((state) => state.products.products);
   const loading = useSelector((state) => state.products.loading);
   const searchQuery = useSelector((state) => state.search.query); //  search state in Redux
   const [itemsPerPage] = useState(8); // Number of items per page
+
+  const cartItems = useSelector(selectCartItems);
 
 
   useEffect(() => {
@@ -45,14 +47,23 @@ const Products = () => {
   };
 
   const handleAddToCart = (productId ,price_per_unit) => {
-
-
     if (!isAuthenticated()) {
       toast.error("Please login to add items to the cart.");
       return;
     }
 
-    dispatch(addToCart({productId ,quantity:1,price_per_unit })); // Dispatch the action to add item to cart
+     // Check if the product is already in the cart
+     const productInCart = cartItems.find(item => item.product_id === productId);
+
+
+     if (productInCart) {
+      // Product is already in the cart, handle as needed (e.g., show a message)
+      toast.warning("This product is already in your cart.");
+    } else {
+      // Product is not in the cart, dispatch the action to add it
+      dispatch(addToCart({ productId, quantity: 1, price_per_unit }));
+    }
+
   };
 
  // Filter products based on search query
@@ -75,7 +86,11 @@ const Products = () => {
 
 
   if (loading) {
-    return <div>Loading...</div>;
+    return  (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress color="success" />
+      </div>
+    );
   }
 
 
@@ -146,12 +161,21 @@ const Products = () => {
                   onClick={() => handleAddToCart(product.id , product.price)}
                     variant="contained"
                     color="primary"
-                    startIcon={<AddToCartIcon/>}
+                    startIcon={
+                      cartItems.some((item) => item.product_id === product.id) ? (
+                        <DoneIcon style={{ color: "green" }} />
+                      ) : (
+                        <AddToCartIcon />
+                      )
+
+                  }
                     sx={{
                       backgroundColor: "#ffffff",
                       color: "black",
                       margin: "15px 15px 15px 15px",
-                      "&:hover": { backgroundColor: "#1976d2" },  }} >
+                      "&:hover": { backgroundColor: "#1976d2" },
+                       }} >
+        {cartItems.some((item) => item.product_id === product.id) ? "Added" : " "}
 
 
                   </Button>

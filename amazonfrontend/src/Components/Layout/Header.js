@@ -1,11 +1,12 @@
-
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
-import { NavLink } from "react-router-dom";
-import { useAuth } from "../../Context/Auth";
 import { useSelector ,useDispatch } from "react-redux";
 import React, {useEffect ,useState}from "react";
 import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../../Context/Auth";
+import { selectCartItems } from "../../Redux/cartSlice"; // Import the selectCartItems selector
+import { setSearchQuery } from '../../Redux/searchSlice';
 import {
   AppBar,
   Toolbar,
@@ -14,16 +15,20 @@ import {
   InputBase
 } from "@mui/material";
 
-import { setSearchQuery } from '../../Redux/searchSlice'; // Import setSearchQuery action
-
-
 
 const Header = () => {
 
   const dispatch = useDispatch();
-  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const navigate = useNavigate();
+  const cartItems = useSelector(selectCartItems);
+  const totalQuantity = cartItems.length; // Calculate total quantity based on cart items
 
+
+  //const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const [searchQuery, setSearchQueryLocal] = useState('');
+  const [auth, setAuth] = useAuth();
+  const [showLogoutAlert, setShowLogoutAlert] = useState(false);
+
 
   const handleSearchInputChange = (e) => {
     const query = e.target.value;
@@ -32,10 +37,7 @@ const Header = () => {
   };
 
 
-  const { isAuthenticated } = useAuth();
-  const [auth, setAuth] = useAuth();
-  const navigate = useNavigate();
-  const [showLogoutAlert, setShowLogoutAlert] = useState(false);
+
 
   const handleLogout = () => {
     setShowLogoutAlert(true);
