@@ -62,13 +62,11 @@ export default function SignIn() {
 
       if (response.data.success) {
         setAuth({
-          ...auth,
-          user: response.data.user,
-          token: response.data.token,
+          token: response.data.token
         });
         console.log(response.data);
 
-        localStorage.setItem("auth", JSON.stringify(response.data));
+        localStorage.setItem("auth", JSON.stringify(response.data.token));
         console.log(auth);
         toast.success(response.data.message);
         navigate("/");
@@ -89,7 +87,6 @@ export default function SignIn() {
         }
       }
     } catch (error) {
-      // Handle network errors or other exceptions
       toast.error("Invalid credentials");
     }
   };

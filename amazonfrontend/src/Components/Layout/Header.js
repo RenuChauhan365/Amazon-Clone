@@ -17,11 +17,13 @@ import {
 
 
 const Header = () => {
+  const totalQuantity = useSelector(state =>  state.cart.totalQuantity);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const cartItems = useSelector(selectCartItems);
-  const totalQuantity = cartItems.length; // Calculate total quantity based on cart items
+  
+  //const cartItems = useSelector(selectCartItems);
+  //const totalQuantity = cartItems.length; // Calculate total quantity based on cart items
 
 
   //const totalQuantity = useSelector((state) => state.cart.totalQuantity);
@@ -37,16 +39,21 @@ const Header = () => {
   };
 
 
-
-
   const handleLogout = () => {
     setShowLogoutAlert(true);
   };
 
-  useEffect(() => {
-    localStorage.setItem('totalQuantity', totalQuantity);
-  }, [totalQuantity]);
+  //useEffect(() => {
+  //  localStorage.setItem('totalQuantity', totalQuantity);
+  //}, [totalQuantity]);
 
+  useEffect(() => {
+    if (totalQuantity) {
+      localStorage.setItem("totalQuantity", totalQuantity);
+    } else {
+      localStorage.setItem("totalQuantity", 0);
+    }
+  }, [totalQuantity]);
 
   const confirmLogout = () => {
     setAuth({
@@ -122,7 +129,7 @@ const Header = () => {
           </NavLink>
 
           {
-          !auth.user? (
+          !auth.token? (
             <>
               <NavLink
               className="nav-link"
@@ -165,7 +172,7 @@ const Header = () => {
 
             style={{ textDecoration: "none", color: "white", marginLeft: 20 }}
           >
-            Dashboard
+            Order
           </NavLink>
               <NavLink
                 onClick={handleLogout}

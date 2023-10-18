@@ -1,42 +1,47 @@
-import axios from 'axios';
-import { addToCart, removeFromCart, clearCart } from '../Redux/cartSlice';
-import  useAuth from '../Context/Auth'
-
+import axios from "axios";
+import { addToCart, removeFromCart, clearCart } from "../Redux/cartSlice";
 
 export const addItemToCart = (product) => async (dispatch) => {
-
-  const {token} = useAuth()
-
   try {
+    const {ProductId ,quantity} = product
 
-    const response = await axios({
-      method: 'post',
-      url: `${process.env.REACT_APP_API}/api/cart/add`,
-      headers: {
-        'Authorization': token
-      },
-      data: {"ProductId": 1, quantity: 1}
-    })
+    console.log("Adding item to cart:", ProductId ,quantity);
+    const token = localStorage.getItem("auth");
+    console.log("Token : ", token);
 
-    console.log("API Response:", response.data); // Response data
+    const response = await axios.post(
+      `${process.env.REACT_APP_API}/api/cart/add`,
+      { ProductId: ProductId, quantity: quantity } ,
+     { headers: {
+        authorization: `Bearer ${token}`
+      }}
+
+    )
+
+    console.log("This is a Response",response)
+    console.log("API Response Data:", response.data);
 
 
-    product = response.data;
-    dispatch(addToCart(product));
 
-
+    dispatch(addToCart(response.data));
   } catch (error) {
-		console.log(error.message);
-	}
+    console.log(error.message);
+  }
 };
+
+
+
+
+
 
 export const removeItemFromCart = (productId) => async (dispatch) => {
   try {
-    await axios.delete(`${process.env.REACT_APP_API}/api/cart/remove`, { data: { productId } });
+    await axios.delete(`${process.env.REACT_APP_API}/api/cart/remove`, {
+      data: { productId },
+    });
     dispatch(removeFromCart(productId));
   } catch (error) {
-		console.log(error.message);
-
+    console.log(error.message);
   }
 };
 
@@ -45,6 +50,6 @@ export const clearCartItems = () => async (dispatch) => {
     await axios.delete(`${process.env.REACT_APP_API}/api/cart/removeAll`);
     dispatch(clearCart());
   } catch (error) {
-		console.log(error.message);
+    console.log(error.message);
   }
 };

@@ -41,7 +41,10 @@ const OrderListing = () => {
       </List>
       <p>Total Quantity: {totalQuantity}</p>
       <p>Total Price: ${totalPrice.toFixed(2)}</p>
+<button className="btn btn-success"> Place Order </button>
     </div>
+
+
   );
 };
 

@@ -1,24 +1,34 @@
-import React  , {useState} from "react";
+import React  , {useState  , useEffect} from "react";
 import { Card, Button, CardContent, CardActions, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { updateCartItemQuantity, removeFromCart } from "../../Redux/cartSlice";
 
 
 const CartItem = ({ item }) => {
-
+  const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(item.quantity);
 
+
+
+
   const handleIncrement = () => {
-    setQuantity(quantity + 1);
+    setQuantity(prevQuantity => prevQuantity + 1);
+    dispatch(updateCartItemQuantity({ productId: item.product_id, quantity: quantity + 1 }));
+
   };
 
   const handleDecrement = () => {
     if (quantity >=1) {
-      setQuantity(quantity - 1);
+      setQuantity(prevQuantity => prevQuantity - 1);
+      dispatch(updateCartItemQuantity({ productId: item.product_id, quantity: quantity - 1 }));
+
     }
   };
 
 
-  console.log("all items" , item)
-
+  const handleRemoveFromCart = () => {
+    dispatch(removeFromCart(item.product_id));
+  };
 
   return (
     <div className="cart-products">

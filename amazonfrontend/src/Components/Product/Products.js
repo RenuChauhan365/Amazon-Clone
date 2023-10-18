@@ -2,7 +2,7 @@ import React, { useEffect ,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../Redux/productActions";
 import { NavLink } from "react-router-dom";
-import { Button ,Pagination ,CircularProgress  } from "@mui/material";
+import { Button ,Pagination,CircularProgress  } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import ViewDetailsIcon from "@mui/icons-material/Visibility";
 import AddToCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -11,14 +11,16 @@ import Rating from '@mui/material/Rating';
 import WishlistIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import {toast} from 'react-toastify'
-import { isAuthenticated } from "../../Context/Auth";
-import { addToCart, selectCartItems } from "../../Redux/cartSlice";
-
+import { selectCartItems } from "../../Redux/cartSlice";
+import { updateTotalQuantity ,removeFromCart } from "../../Redux/cartSlice"; // Add this import
+import { addItemToCart } from '../../Redux/cartAction';
+import { isAuthenticated, useAuth } from "../../Context/Auth"; // Import useAuth from the correct path
 
 const Products = () => {
 
-
+  const { auth } = useAuth(); // Use the useAuth hook inside the functional component
   const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(1); // Initialize quantity with a default value of 1
   const [wishlist, setWishlist] = useState([]);
   const [page, setPage] = useState(1); // Current page number
   const products = useSelector((state) => state.products.products);
@@ -26,7 +28,7 @@ const Products = () => {
   const searchQuery = useSelector((state) => state.search.query); //  search state in Redux
   const [itemsPerPage] = useState(8); // Number of items per page
 
-  const cartItems = useSelector(selectCartItems);
+  const cartItems = useSelector( state => state.cart.items);
 
 
   useEffect(() => {
@@ -46,23 +48,30 @@ const Products = () => {
     return wishlist.includes(productId);
   };
 
-  const handleAddToCart = (productId ,price_per_unit) => {
-    if (!isAuthenticated()) {
-      toast.error("Please login to add items to the cart.");
-      return;
-    }
+  const handleAddToCart = (productId , quantity=1,  productPrice) => {
+    //if (!isAuthenticated()) {
+    //  toast.error("Please login to add items to the cart.");
+    //  return;
+    //}
 
-     // Check if the product is already in the cart
-     const productInCart = cartItems.find(item => item.product_id === productId);
+    const product = {
+      ProductId: productId,
+      quantity:quantity,
+      price_per_unit: productPrice
+    };
 
-
-     if (productInCart) {
-      // Product is already in the cart, handle as needed (e.g., show a message)
-      toast.warning("This product is already in your cart.");
+    console.log( " this is a cartitems : ",cartItems)
+    const productInCartIndex = cartItems.findIndex(
+      (item) => item.ProductId === productId
+    );
+    if (productInCartIndex !== -1) {
+      dispatch(removeFromCart(productId));
     } else {
-      // Product is not in the cart, dispatch the action to add it
-      dispatch(addToCart({ productId, quantity: 1, price_per_unit }));
+
+      dispatch(addItemToCart(product));
     }
+
+    dispatch(updateTotalQuantity());
 
   };
 
@@ -98,8 +107,6 @@ const Products = () => {
     <>
       <div className="container mt-5">
 
-        {/*  pagination  */}
-
         <Pagination
           count={Math.ceil(products.length / itemsPerPage)}
           page={page}
@@ -114,22 +121,19 @@ const Products = () => {
         <div className="row">
           {currentProducts.map((product) => (
             <div
-              className="col-lg-3 col-md-4 col-sm-6 mb-4 box"
+              className="col-lg-3 col-md-4 col-sm-6 mb-4 "
               key={product.id}
     >
               <div className="card">
+              <div className="card-img-top card-img-cover"
+                 style={{ backgroundImage: `url(${product.image})` }} > </div>
 
                 <div className="card-body">
-                  <div
-                    className="card-img-top card-img-cover"
-                    style={{ backgroundImage: `url(${product.image})` }}
-                  ></div>
-                  <h5 className="card-title">{product.name}</h5>
-                  <p className="card-text">{product.description}</p>
-                </div>
-
-                <p style={{ color: "black",  marginLeft:'15px'}}> Price : $ {product.price}</p>
+              &nbsp;    <strong className="card-title">{product.name}</strong>
+              <p className="card-text">{product.description}</p>
+                  <p style={{ color: "black",  marginLeft:'15px'}}> Price : $ {product.price}</p>
                 <p style={{ color: "black" , marginLeft:'15px' }}> In Stock : {product.stock}</p>
+
 
                  <Rating
                   name="product-rating"
@@ -138,7 +142,9 @@ const Products = () => {
                   style={{marginLeft:'15px'}}
                   readOnly >
                  </Rating>
-                 <hr/>
+
+
+
                 <div className="d-flex">
                   <Button
                     component={NavLink}
@@ -157,25 +163,27 @@ const Products = () => {
 
                   </Button>
 
+
                   <Button
-                  onClick={() => handleAddToCart(product.id , product.price)}
+                  onClick={() => handleAddToCart(product.id , 1, product.price)}
                     variant="contained"
                     color="primary"
                     startIcon={
-                      cartItems.some((item) => item.product_id === product.id) ? (
+                      cartItems.some((item) => item.ProductId === product.id) ? (
                         <DoneIcon style={{ color: "green" }} />
                       ) : (
                         <AddToCartIcon />
                       )
+                    }
 
-                  }
                     sx={{
                       backgroundColor: "#ffffff",
                       color: "black",
                       margin: "15px 15px 15px 15px",
+                      padding:" 0px 45px",
                       "&:hover": { backgroundColor: "#1976d2" },
                        }} >
-        {cartItems.some((item) => item.product_id === product.id) ? "Added" : " "}
+  {cartItems.some((item) => item.ProductId === product.id) ? "Added" : " "}
 
 
                   </Button>
@@ -187,6 +195,9 @@ const Products = () => {
                     <WishlistIcon />
                   </IconButton>
                 </div>
+              </div>
+
+
               </div>
             </div>
           ))}
