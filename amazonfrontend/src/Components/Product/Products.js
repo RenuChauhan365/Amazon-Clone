@@ -48,7 +48,8 @@ const Products = () => {
     return wishlist.includes(productId);
   };
 
-  const handleAddToCart = (productId , quantity=1,  productPrice) => {
+
+  const handleAddToCart = (productId , quantity,  productPrice , productImage ,productName , TotalPrice) => {
     //if (!isAuthenticated()) {
     //  toast.error("Please login to add items to the cart.");
     //  return;
@@ -57,17 +58,19 @@ const Products = () => {
     const product = {
       ProductId: productId,
       quantity:quantity,
-      price_per_unit: productPrice
+      productPrice: productPrice,
+      //totalPrice:productPrice*quantity,
+      productImage:productImage,
+      productName:productName,
+      TotalPrice:TotalPrice
     };
 
-    console.log( " this is a cartitems : ",cartItems)
     const productInCartIndex = cartItems.findIndex(
       (item) => item.ProductId === productId
     );
     if (productInCartIndex !== -1) {
       dispatch(removeFromCart(productId));
     } else {
-
       dispatch(addItemToCart(product));
     }
 
@@ -92,7 +95,6 @@ const Products = () => {
   };
 
 // searching
-
 
   if (loading) {
     return  (
@@ -165,7 +167,7 @@ const Products = () => {
 
 
                   <Button
-                  onClick={() => handleAddToCart(product.id , 1, product.price)}
+                  onClick={() => handleAddToCart(product.id , quantity, product.price , product.image , product.name ,product.quantity*product.price)}
                     variant="contained"
                     color="primary"
                     startIcon={

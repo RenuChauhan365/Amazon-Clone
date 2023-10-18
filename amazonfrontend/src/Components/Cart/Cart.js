@@ -1,18 +1,25 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart, clearCart } from "../../Redux/cartSlice";
+import {  removeFromCart, clearCart } from "../../Redux/cartSlice";
 import { Button, List, ListItem } from "@mui/material";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
+import { selectCartItems } from "../../Redux/cartSlice"; // Import selectCartItems from the correct path
+
+
+
 
 const Cart = () => {
-  const cartItems = useSelector((state) => state.cart.items);
+
+
+  const cartItems = useSelector(state => state.cart.items);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const totalPrice = useSelector((state) => state.cart.totalPrice.toFixed(2));
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("cartItems is " ,cartItems)
+  console.log("TotalPrice is ", cartItems.TotalPrice);
 
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));
@@ -56,44 +63,20 @@ const Cart = () => {
 
       <List>
         {cartItems.map((item) => (
-
-
-          <ListItem key={item.product_id} className="d-flex">
-
-            <CartItem item={item}  key={item.product_id} >
-
-
-
-            </CartItem>
+          <ListItem key={item.productId} className="d-flex">
+            <CartItem item={item} key={item.productId}></CartItem>
 
             <Button
-              onClick={() => handleRemoveFromCart(item.product_id)}
+              onClick={() => handleRemoveFromCart(item.productId)}
               variant="contained"
               color="secondary"
-              style={{ marginLeft: "50px" }}>
+              style={{ marginLeft: "50px" }}
+            >
               Remove
             </Button>
           </ListItem>
-
         ))}
       </List>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
   );
 };

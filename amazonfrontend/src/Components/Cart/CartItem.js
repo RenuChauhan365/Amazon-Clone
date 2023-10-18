@@ -5,10 +5,9 @@ import { updateCartItemQuantity, removeFromCart } from "../../Redux/cartSlice";
 
 
 const CartItem = ({ item }) => {
+
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(item.quantity);
-
-
 
 
   const handleIncrement = () => {
@@ -36,12 +35,13 @@ const CartItem = ({ item }) => {
         <Card className=" p-5">
 
           <CardContent >
+            <img src={item.productImage} alt="" />
             <Typography variant="h5" component="div">
-               Name:{item.product ? item.product.name : item.name}
+              {item.productName}
             </Typography>
 
             <Typography variant="body2" color="text.secondary">
-              Price: $ {item.price_per_unit}
+              Price: $ {item.productPrice}
             </Typography>
           </CardContent>
           <CardActions>

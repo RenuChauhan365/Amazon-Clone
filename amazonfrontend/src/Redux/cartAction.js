@@ -2,8 +2,9 @@ import axios from "axios";
 import { addToCart, removeFromCart, clearCart } from "../Redux/cartSlice";
 
 export const addItemToCart = (product) => async (dispatch) => {
+
   try {
-    const {ProductId ,quantity} = product
+    const {ProductId ,quantity , productPrice ,  productImage   ,productName ,TotalPrice} = product
 
     console.log("Adding item to cart:", ProductId ,quantity);
     const token = localStorage.getItem("auth");
@@ -11,7 +12,7 @@ export const addItemToCart = (product) => async (dispatch) => {
 
     const response = await axios.post(
       `${process.env.REACT_APP_API}/api/cart/add`,
-      { ProductId: ProductId, quantity: quantity } ,
+      { ProductId: ProductId, quantity: quantity, productPrice:productPrice, productImage:productImage ,productName:productName  ,TotalPrice:TotalPrice} ,
      { headers: {
         authorization: `Bearer ${token}`
       }}
@@ -19,6 +20,7 @@ export const addItemToCart = (product) => async (dispatch) => {
     )
 
     console.log("This is a Response",response)
+
     console.log("API Response Data:", response.data);
 
 
@@ -28,8 +30,6 @@ export const addItemToCart = (product) => async (dispatch) => {
     console.log(error.message);
   }
 };
-
-
 
 
 
