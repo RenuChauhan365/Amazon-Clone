@@ -19,7 +19,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("TotalPrice is ", cartItems.TotalPrice);
+  console.log("TotalPrice is ", totalPrice);
 
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));

@@ -49,7 +49,7 @@ const Products = () => {
   };
 
 
-  const handleAddToCart = (productId , quantity,  productPrice , productImage ,productName , TotalPrice) => {
+  const handleAddToCart = (productId , quantity,  productPrice , productImage ,productName) => {
     //if (!isAuthenticated()) {
     //  toast.error("Please login to add items to the cart.");
     //  return;
@@ -59,10 +59,9 @@ const Products = () => {
       ProductId: productId,
       quantity:quantity,
       productPrice: productPrice,
-      //totalPrice:productPrice*quantity,
       productImage:productImage,
-      productName:productName,
-      TotalPrice:TotalPrice
+      productName:productName
+
     };
 
     const productInCartIndex = cartItems.findIndex(
@@ -167,7 +166,7 @@ const Products = () => {
 
 
                   <Button
-                  onClick={() => handleAddToCart(product.id , quantity, product.price , product.image , product.name ,product.quantity*product.price)}
+                  onClick={() => handleAddToCart(product.id , quantity, product.price , product.image , product.name)}
                     variant="contained"
                     color="primary"
                     startIcon={
