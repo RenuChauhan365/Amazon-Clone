@@ -2,19 +2,23 @@ import React, { useEffect ,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../Redux/productActions";
 import { NavLink } from "react-router-dom";
-import { Button ,Pagination,CircularProgress  } from "@mui/material";
+import { Button ,Pagination,CircularProgress  , AppBar,
+  InputBase } from "@mui/material";
+  import SearchIcon from "@mui/icons-material/Search";
+
 import DoneIcon from "@mui/icons-material/Done";
 import ViewDetailsIcon from "@mui/icons-material/Visibility";
 import AddToCartIcon from "@mui/icons-material/AddShoppingCart";
 import ProductDetails from "./ProductDetails";
 import Rating from '@mui/material/Rating';
-import WishlistIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import {toast} from 'react-toastify'
 import { selectCartItems } from "../../Redux/cartSlice";
 import { updateTotalQuantity ,removeFromCart } from "../../Redux/cartSlice"; // Add this import
 import { addItemToCart } from '../../Redux/cartAction';
 import { isAuthenticated, useAuth } from "../../Context/Auth"; // Import useAuth from the correct path
+import { setSearchQuery } from '../../Redux/searchSlice';
+
 
 const Products = () => {
 
@@ -25,8 +29,17 @@ const Products = () => {
   const [page, setPage] = useState(1); // Current page number
   const products = useSelector((state) => state.products.products);
   const loading = useSelector((state) => state.products.loading);
-  const searchQuery = useSelector((state) => state.search.query); //  search state in Redux
-  const [itemsPerPage] = useState(8); // Number of items per page
+
+  const [itemsPerPage] = useState(8);
+  const [searchQuery, setSearchQueryLocal] = useState('');
+
+
+  const handleSearchInputChange = (e) => {
+    const query = e.target.value;
+    setSearchQueryLocal(query);
+    dispatch(setSearchQuery(query)); // Dispatch the action to update search query in the Redux store
+  };
+
 
   const cartItems = useSelector( state => state.cart.items);
 
@@ -44,12 +57,10 @@ const Products = () => {
     }
   };
 
-  const isInWishlist = (productId) => {
-    return wishlist.includes(productId);
-  };
 
 
   const handleAddToCart = (productId , quantity,  productPrice , productImage ,productName) => {
+
     //if (!isAuthenticated()) {
     //  toast.error("Please login to add items to the cart.");
     //  return;
@@ -108,6 +119,35 @@ const Products = () => {
     <>
       <div className="container mt-5">
 
+<div>
+
+<div  className="searchInput"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            borderRadius: 4,
+            backgroundColor: "white",
+            padding: "5px 40px",
+          }}
+        >
+          <InputBase
+            placeholder="Search Amazon.in"
+            inputProps={{ "aria-label": "search" }}
+            style={{ paddingLeft: 10 }}
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+          />
+          <IconButton
+            type="submit"
+            aria-label="search"
+            style={{ marginRight: 5 }}
+          >
+            <SearchIcon />
+          </IconButton>
+
+        </div>
+          <hr /> <br />
+</div>
         <Pagination
           count={Math.ceil(products.length / itemsPerPage)}
           page={page}
@@ -126,6 +166,7 @@ const Products = () => {
               key={product.id}
     >
               <div className="card">
+                
               <div className="card-img-top card-img-cover"
                  style={{ backgroundImage: `url(${product.image})` }} > </div>
 
@@ -189,12 +230,7 @@ const Products = () => {
 
                   </Button>
 
-                  <IconButton
-                    onClick={() => handleAddToWishlist(product.id)}
-                    color={isInWishlist(product.id) ? "secondary" : "danger"}
-                  >
-                    <WishlistIcon />
-                  </IconButton>
+
                 </div>
               </div>
 

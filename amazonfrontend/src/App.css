@@ -106,3 +106,23 @@
   margin-bottom: 2px;
 
 }
+
+/* styles.css */
+.searchInput {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  background-color: white;
+  padding: 5px 40px;
+}
+
+.searchInput input {
+  padding-left: 10px;
+  border: none;
+  outline: none;
+  width: 100%; /* Ensures the input takes up all available space */
+}
+
+.searchInput button {
+  margin-right: 5px;
+}

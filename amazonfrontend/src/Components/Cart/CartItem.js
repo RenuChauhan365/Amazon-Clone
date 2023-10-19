@@ -25,7 +25,11 @@ const CartItem = ({ item }) => {
         <Card className=" p-5">
 
           <CardContent >
-            <img src={item.productImage} alt="" />
+            {/*<img src={item.productImage} alt="img"  />*/}
+
+            <div className="card-img-top card-img-cover"
+                 style={{ backgroundImage: `url(${item.productImage})` }} > </div>
+
             <Typography variant="h5" component="div">
               {item.productName}
             </Typography>

@@ -40,9 +40,9 @@ export const cartSlice = createSlice({
 
         const {ProductId , productPrice , quantity} = action.payload;
 
-        console.log("ProductId is >>>>: " , ProductId)
-        const totalPrice = quantity*productPrice
 
+        console.log("ProductId is >>>>: " , productPrice)
+        const totalPrice = quantity*productPrice
 
 
         const existingItemIndex = state.items.findIndex((item) => item.ProductId === ProductId);

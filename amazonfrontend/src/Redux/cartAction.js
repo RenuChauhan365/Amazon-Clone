@@ -46,16 +46,12 @@ export const removeItemFromCart = (product) => async (dispatch) => {
         authorization: `Bearer ${token}`
       },
       data: {
-        
         ProductId: ProductId
       }
     }
-
-
     );
 
     console.log("API Response Data:", res.data);
-
 
     dispatch(removeFromCart(res.data));
   } catch (error) {

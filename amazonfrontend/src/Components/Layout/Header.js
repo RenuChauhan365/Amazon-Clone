@@ -1,38 +1,27 @@
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import SearchIcon from "@mui/icons-material/Search";
 import { useSelector ,useDispatch } from "react-redux";
 import React, {useEffect ,useState}from "react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../Context/Auth";
-import { selectCartItems } from "../../Redux/cartSlice"; // Import the selectCartItems selector
-import { setSearchQuery } from '../../Redux/searchSlice';
 import {
   AppBar,
   Toolbar,
   Typography,
-  IconButton,
-  InputBase
+  IconButton
+
 } from "@mui/material";
 
 
 const Header = () => {
+
   const totalQuantity = useSelector(state =>  state.cart.totalQuantity);
 
   console.log("totalQuantity is " ,totalQuantity)
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [searchQuery, setSearchQueryLocal] = useState('');
   const [auth, setAuth] = useAuth();
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
-
-
-  const handleSearchInputChange = (e) => {
-    const query = e.target.value;
-    setSearchQueryLocal(query);
-    dispatch(setSearchQuery(query)); // Dispatch the action to update search query in the Redux store
-  };
 
 
   const handleLogout = () => {
@@ -61,10 +50,6 @@ const Header = () => {
     localStorage.removeItem("productDetails")
     localStorage.removeItem("totalQuantity")
 
-
-
-
-
     navigate("/auth/login");
     setShowLogoutAlert(false);
   };
@@ -83,30 +68,7 @@ const Header = () => {
           ></img>
         </Typography>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            borderRadius: 4,
-            backgroundColor: "white",
-            padding: "5px 40px",
-          }}
-        >
-          <InputBase
-            placeholder="Search Amazon.in"
-            inputProps={{ "aria-label": "search" }}
-            style={{ paddingLeft: 10 }}
-            value={searchQuery}
-            onChange={handleSearchInputChange}
-          />
-          <IconButton
-            type="submit"
-            aria-label="search"
-            style={{ marginRight: 5 }}
-          >
-            <SearchIcon />
-          </IconButton>
-        </div>
+
 
         <div style={{ display: "flex" }}>
           <NavLink
@@ -208,7 +170,6 @@ const Header = () => {
             </>
           )}
 
-
         </div>
 
         {showLogoutAlert && (
@@ -220,7 +181,6 @@ const Header = () => {
                 )}
       </Toolbar>
     </AppBar>
-
 
     </div>
 
