@@ -18,12 +18,10 @@ const Cart = () => {
 
   const totalPrice = useSelector((state) => state.cart.totalPrice.toFixed(2));
   const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
-  console.log("TotalPrice is ", totalPrice);
 
 
-  useEffect(() => {
-    console.log("Cart items changed:", cartItems);
-  }, [cartItems]);
+console.log("cartItems in  remove " , cartItems)
+
 
   const handleRemoveFromCart = (ProductId , productPrice , quantity) => {
 
@@ -79,7 +77,7 @@ const Cart = () => {
             <CartItem item={item} key={item.ProductId}></CartItem>
 
             <Button
-              onClick={() => handleRemoveFromCart(item.ProductId , item.productPrice , item.quantity)}
+              onClick={() => handleRemoveFromCart(item.ProductId)}
               variant="contained"
               color="secondary"
               style={{ marginLeft: "50px" }}

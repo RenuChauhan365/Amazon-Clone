@@ -33,23 +33,29 @@ export const addItemToCart = (product) => async (dispatch) => {
 
 export const removeItemFromCart = (product) => async (dispatch) => {
   try {
+
     const { ProductId} = product
+
     const token = localStorage.getItem("auth");
     console.log("Token : ", token);
 
-    await axios.delete(`${process.env.REACT_APP_API}/api/cart/remove`,
+   const res =  await axios.delete(`${process.env.REACT_APP_API}/api/cart/remove`,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        authorization: `Bearer ${token}`
       },
       data: {
         ProductId: ProductId
       }
     }
 
+
     );
 
-    dispatch(removeFromCart(ProductId));
+    console.log("API Response Data:", res.data);
+
+
+    dispatch(removeFromCart(res.data));
   } catch (error) {
     console.log(error.message);
   }
