@@ -55,9 +55,8 @@ export const removeItemFromCart = (product) => async (dispatch) => {
   }
 };
 
-export const clearCartItems = (product) => async (dispatch) => {
+export const clearCartItems = () => async (dispatch) => {
   try {
-    const { ProductId} = product
     const token = localStorage.getItem("auth");
     console.log("Token : ", token);
 
@@ -66,7 +65,7 @@ export const clearCartItems = (product) => async (dispatch) => {
         Authorization: `Bearer ${token}`
       }
     });
-    dispatch(clearCart(ProductId));
+    dispatch(clearCart());
   } catch (error) {
     console.log(error.message);
   }
