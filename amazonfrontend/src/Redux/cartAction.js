@@ -12,6 +12,8 @@ export const addItemToCart = (product) => async (dispatch) => {
 
     const response = await axios.post(
       `${process.env.REACT_APP_API}/api/cart/add`,
+
+
       { ProductId: ProductId, quantity: quantity, productPrice:productPrice, productImage:productImage ,productName:productName  ,TotalPrice:TotalPrice} ,
      { headers: {
         authorization: `Bearer ${token}`
@@ -20,10 +22,7 @@ export const addItemToCart = (product) => async (dispatch) => {
     )
 
     console.log("This is a Response",response)
-
     console.log("API Response Data:", response.data);
-
-
 
     dispatch(addToCart(response.data));
   } catch (error) {
@@ -32,23 +31,42 @@ export const addItemToCart = (product) => async (dispatch) => {
 };
 
 
-
-
-export const removeItemFromCart = (productId) => async (dispatch) => {
+export const removeItemFromCart = (product) => async (dispatch) => {
   try {
-    await axios.delete(`${process.env.REACT_APP_API}/api/cart/remove`, {
-      data: { productId },
-    });
-    dispatch(removeFromCart(productId));
+    const { ProductId} = product
+    const token = localStorage.getItem("auth");
+    console.log("Token : ", token);
+
+    await axios.delete(`${process.env.REACT_APP_API}/api/cart/remove`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      data: {
+        ProductId: ProductId
+      }
+    }
+
+    );
+
+    dispatch(removeFromCart(ProductId));
   } catch (error) {
     console.log(error.message);
   }
 };
 
-export const clearCartItems = () => async (dispatch) => {
+export const clearCartItems = (product) => async (dispatch) => {
   try {
-    await axios.delete(`${process.env.REACT_APP_API}/api/cart/removeAll`);
-    dispatch(clearCart());
+    const { ProductId} = product
+    const token = localStorage.getItem("auth");
+    console.log("Token : ", token);
+
+    await axios.delete(`${process.env.REACT_APP_API}/api/cart/removeAll`,{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    dispatch(clearCart(ProductId));
   } catch (error) {
     console.log(error.message);
   }

@@ -1,37 +1,49 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  removeFromCart, clearCart } from "../../Redux/cartSlice";
+import {  clearCart } from "../../Redux/cartSlice";
+import {removeItemFromCart ,clearCartItems} from  "../../Redux/cartAction";
 import { Button, List, ListItem } from "@mui/material";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
-import { selectCartItems } from "../../Redux/cartSlice"; // Import selectCartItems from the correct path
-
+import { removeFromCart } from "../../Redux/cartSlice";
 
 
 
 const Cart = () => {
-
-
-  const cartItems = useSelector(state => state.cart.items);
-  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
-  const totalPrice = useSelector((state) => state.cart.totalPrice.toFixed(2));
-
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
+  const cartItems = useSelector(state => state.cart.items);
+
+  const totalPrice = useSelector((state) => state.cart.totalPrice.toFixed(2));
+  const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
   console.log("TotalPrice is ", totalPrice);
 
-  const handleRemoveFromCart = (productId) => {
-    dispatch(removeFromCart(productId));
+
+  useEffect(() => {
+    console.log("Cart items changed:", cartItems);
+  }, [cartItems]);
+
+  const handleRemoveFromCart = (ProductId , productPrice , quantity) => {
+
+    const product = {
+      ProductId:ProductId,
+      productPrice:productPrice,
+      quantity:quantity
+    }
+    dispatch(removeItemFromCart(product));
   };
 
+
   const handleClearCart = () => {
-    dispatch(clearCart());
+    dispatch(clearCartItems());
   };
 
   const handleCheckout = () => {
     navigate("/order");
   };
+
 
   return (
     <div>
@@ -63,11 +75,11 @@ const Cart = () => {
 
       <List>
         {cartItems.map((item) => (
-          <ListItem key={item.productId} className="d-flex">
-            <CartItem item={item} key={item.productId}></CartItem>
+          <ListItem key={item.ProductId} className="d-flex">
+            <CartItem item={item} key={item.ProductId}></CartItem>
 
             <Button
-              onClick={() => handleRemoveFromCart(item.productId)}
+              onClick={() => handleRemoveFromCart(item.ProductId , item.productPrice , item.quantity)}
               variant="contained"
               color="secondary"
               style={{ marginLeft: "50px" }}

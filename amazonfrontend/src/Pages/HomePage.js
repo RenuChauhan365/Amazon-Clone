@@ -1,6 +1,4 @@
 import React from "react";
-import Products from "../components/Product/Products";
-
 function HomePage() {
 
   return (
@@ -85,7 +83,7 @@ function HomePage() {
           </button>
 
         </div>
-        <Products/>
+
       </div>
       {/*<pre> {JSON.stringify(auth, null, 4)} </pre>*/}
     </>

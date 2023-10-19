@@ -2,6 +2,7 @@ import React  , {useState  , useEffect} from "react";
 import { Card, Button, CardContent, CardActions, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { updateCartItemQuantity, removeFromCart } from "../../Redux/cartSlice";
+import { incrementQuantity, decrementQuantity } from "../../Redux/cartSlice";
 
 
 const CartItem = ({ item }) => {
@@ -9,24 +10,17 @@ const CartItem = ({ item }) => {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(item.quantity);
 
-
-  const handleIncrement = () => {
-    setQuantity(prevQuantity => prevQuantity + 1);
-    dispatch(updateCartItemQuantity({ productId: item.product_id, quantity: quantity + 1 }));
-
+  const handleIncrementQuantity = (ProductId) => {
+    dispatch(incrementQuantity({ ProductId }));
   };
 
-  const handleDecrement = () => {
-    if (quantity >=1) {
-      setQuantity(prevQuantity => prevQuantity - 1);
-      dispatch(updateCartItemQuantity({ productId: item.product_id, quantity: quantity - 1 }));
-
-    }
+  const handleDecrementQuantity = (ProductId) => {
+    dispatch(decrementQuantity({ ProductId }));
   };
 
 
   const handleRemoveFromCart = () => {
-    dispatch(removeFromCart(item.product_id));
+    dispatch(removeFromCart(item.ProductId));
   };
 
   return (
@@ -45,11 +39,16 @@ const CartItem = ({ item }) => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" color="secondary" variant="outlined" onClick={handleIncrement}>
+            <Button size="small" color="secondary" variant="outlined"
+            onClick={() => handleIncrementQuantity(item.ProductId)}
+
+             >
               +
             </Button>
-             &nbsp; {quantity}
-            <Button size="small" color="secondary" variant="outlined" onClick={ handleDecrement}>
+             &nbsp; {item.quantity}
+            <Button size="small" color="secondary" variant="outlined"
+            onClick={() => handleDecrementQuantity(item.ProductId)}
+            >
               -
             </Button>
           </CardActions>

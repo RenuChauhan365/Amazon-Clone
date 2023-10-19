@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const updateLocalStorage = (state) => {
   localStorage.setItem("cart", JSON.stringify(state.items));
-  localStorage.setItem("totalQuantity", state.totalQuantity);
-  localStorage.setItem("totalPrice", state.totalPrice);
+  localStorage.setItem("totalQuantity", state.totalQuantity.toString());
+  localStorage.setItem("totalPrice", state.totalPrice.toString());
 };
 
 export const cartSlice = createSlice({
@@ -15,6 +15,7 @@ export const cartSlice = createSlice({
     totalPrice: parseFloat(localStorage.getItem("totalPrice")) || 0
   },
   reducers: {
+
     addToCart: (state, action) => {
       const { ProductId,quantity, productPrice , productImage ,productName } = action.payload;
       const totalPrice = quantity*productPrice
@@ -29,39 +30,40 @@ export const cartSlice = createSlice({
       }
 
 
-  state.totalQuantity += quantity;
+      state.totalQuantity += quantity;
       state.totalPrice += quantity * productPrice;
 
-  updateLocalStorage(state);
+     updateLocalStorage(state);
 
     },
 
       removeFromCart: (state, action) => {
-        const productId = action.payload;
-console.log(productId)
+        const {ProductId , productPrice , quantity} = action.payload;
 
+        console.log("ProductId is : " , ProductId)
+        const totalPrice = quantity*productPrice
 
-        const existingItemIndex = state.items.findIndex((item) => item.ProductId === productId);
-
+        const existingItemIndex = state.items.findIndex((item) => item.ProductId === ProductId);
         if (existingItemIndex !== -1) {
           state.totalQuantity -= state.items[existingItemIndex].quantity;
-          state.totalPrice -= state.items[existingItemIndex].total_price;
+          state.totalPrice -= state.items[existingItemIndex].totalPrice;
           state.items.splice(existingItemIndex, 1);
         }
-
            updateLocalStorage(state);
       },
+
 
       updateTotalQuantity: (state) => {
         state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
       },
-
 
     clearCart: (state) => {
       state.items = [];
       state.totalQuantity = 0;
       state.totalPrice = 0;
       localStorage.removeItem("cart");
+      updateLocalStorage(state);
+
 
     },
 
@@ -70,17 +72,34 @@ console.log(productId)
         state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
         state.totalPrice = state.items.reduce((total, item) => total + item.productPrice, 0);
         updateLocalStorage(state);
+    }
+,
+    incrementQuantity: (state, action) => {
+      const { ProductId } = action.payload;
+      const cartItem = state.items.find((item) => item.ProductId === ProductId);
+
+
+      if (cartItem) {
+        cartItem.quantity += 1;
+        cartItem.totalPrice += cartItem.productPrice;
+        state.totalPrice += cartItem.productPrice;
       }
+    },
 
-
+    decrementQuantity: (state, action) => {
+      const { ProductId } = action.payload;
+      const cartItem = state.items.find((item) => item.ProductId === ProductId);
+      if (cartItem && cartItem.quantity > 1) {
+        cartItem.quantity -= 1;
+        cartItem.totalPrice -= cartItem.productPrice;
+        state.totalPrice -= cartItem.productPrice;
+    }},
     },
   })
 
 
 
-
-
-export const { addToCart, removeFromCart, clearCart  ,updateTotalQuantity ,updateCartItemQuantity} = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart  ,updateTotalQuantity ,updateCartItemQuantity , incrementQuantity, decrementQuantity } = cartSlice.actions;
 
 export const selectCartItems = state => state.cart.items;
 export const selectTotalQuantity = (state) => state.cart.totalQuantity;

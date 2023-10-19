@@ -19,14 +19,10 @@ import {
 const Header = () => {
   const totalQuantity = useSelector(state =>  state.cart.totalQuantity);
 
+  console.log("totalQuantity is " ,totalQuantity)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  //const cartItems = useSelector(selectCartItems);
-  //const totalQuantity = cartItems.length; // Calculate total quantity based on cart items
 
-
-  //const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const [searchQuery, setSearchQueryLocal] = useState('');
   const [auth, setAuth] = useAuth();
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
@@ -43,9 +39,6 @@ const Header = () => {
     setShowLogoutAlert(true);
   };
 
-  //useEffect(() => {
-  //  localStorage.setItem('totalQuantity', totalQuantity);
-  //}, [totalQuantity]);
 
   useEffect(() => {
     if (totalQuantity) {
@@ -58,16 +51,26 @@ const Header = () => {
   const confirmLogout = () => {
     setAuth({
       user: null,
-      token: "",
+      token: ""
     });
+
     localStorage.removeItem("auth");
+    localStorage.removeItem("userData")
+    localStorage.removeItem("totalPrice")
+    localStorage.removeItem("cart")
+    localStorage.removeItem("productDetails")
+    localStorage.removeItem("totalQuantity")
+
+
+
+
+
     navigate("/auth/login");
     setShowLogoutAlert(false);
   };
 
 
   return (
-
     <>
     <div  className="header">
     <AppBar  position="static" sx={{ backgroundColor: "black" }}>
