@@ -24,13 +24,7 @@ console.log("cartItems in  remove " , cartItems)
 
 
   const handleRemoveFromCart = (ProductId , productPrice , quantity) => {
-
-    const product = {
-      ProductId:ProductId,
-      productPrice:productPrice,
-      quantity:quantity
-    }
-    dispatch(removeItemFromCart(product));
+    dispatch(removeItemFromCart({ProductId, productPrice, quantity}));
   };
 
 
@@ -41,7 +35,6 @@ console.log("cartItems in  remove " , cartItems)
   const handleCheckout = () => {
     navigate("/order");
   };
-
 
   return (
     <div>
@@ -59,7 +52,7 @@ console.log("cartItems in  remove " , cartItems)
           >
             Checkout
           </Button>
-
+          
           <Button
             onClick={handleClearCart}
             variant="contained"

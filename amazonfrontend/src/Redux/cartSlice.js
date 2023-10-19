@@ -36,12 +36,14 @@ export const cartSlice = createSlice({
      updateLocalStorage(state);
 
     },
-
       removeFromCart: (state, action) => {
+
         const {ProductId , productPrice , quantity} = action.payload;
 
-        console.log("ProductId is : " , ProductId)
+        console.log("ProductId is >>>>: " , ProductId)
         const totalPrice = quantity*productPrice
+
+
 
         const existingItemIndex = state.items.findIndex((item) => item.ProductId === ProductId);
         if (existingItemIndex !== -1) {
@@ -104,6 +106,11 @@ export const { addToCart, removeFromCart, clearCart  ,updateTotalQuantity ,updat
 export const selectCartItems = state => state.cart.items;
 export const selectTotalQuantity = (state) => state.cart.totalQuantity;
 export const selectTotalPrice = (state) => state.cart.totalPrice;
+
+
+
+
+
 
 export default cartSlice.reducer;
 

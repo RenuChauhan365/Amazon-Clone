@@ -35,6 +35,7 @@ export const removeItemFromCart = (product) => async (dispatch) => {
   try {
 
     const { ProductId} = product
+    console.log("ProductId is --->>" ,ProductId)
 
     const token = localStorage.getItem("auth");
     console.log("Token : ", token);
@@ -45,6 +46,7 @@ export const removeItemFromCart = (product) => async (dispatch) => {
         authorization: `Bearer ${token}`
       },
       data: {
+        
         ProductId: ProductId
       }
     }

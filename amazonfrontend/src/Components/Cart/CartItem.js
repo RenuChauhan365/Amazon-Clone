@@ -19,10 +19,6 @@ const CartItem = ({ item }) => {
   };
 
 
-  const handleRemoveFromCart = () => {
-    dispatch(removeFromCart(item.ProductId));
-  };
-
   return (
     <div className="cart-products">
       <div className="col mb-4 ">
